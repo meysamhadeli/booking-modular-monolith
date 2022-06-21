@@ -1,12 +1,11 @@
 using Ardalis.GuardClauses;
 using BuildingBlocks.Contracts.EventBus.Messages;
-using BuildingBlocks.IdsGenerator;
-using MassTransit;
+using DotNetCore.CAP;
 using Passenger.Data;
 
 namespace Passenger.Identity.RegisterNewUser;
 
-public class RegisterNewUserConsumerHandler : IConsumer<UserCreated>
+public class RegisterNewUserConsumerHandler : ICapSubscribe
 {
     private readonly PassengerDbContext _passengerDbContext;
 
@@ -15,11 +14,13 @@ public class RegisterNewUserConsumerHandler : IConsumer<UserCreated>
         _passengerDbContext = passengerDbContext;
     }
 
-    public async Task Consume(ConsumeContext<UserCreated> context)
+    [CapSubscribe(nameof(UserCreated))]
+    public async Task Consume(UserCreated userCreated)
     {
-        Guard.Against.Null(context.Message, nameof(UserCreated));
+        Guard.Against.Null(userCreated, nameof(UserCreated));
 
-        var passenger = Passengers.Models.Passenger.Create(context.Message.Id, context.Message.Name, context.Message.PassportNumber);
+        var passenger =
+            Passengers.Models.Passenger.Create(userCreated.Id, userCreated.Name, userCreated.PassportNumber);
 
         await _passengerDbContext.AddAsync(passenger);
 

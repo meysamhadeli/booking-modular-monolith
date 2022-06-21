@@ -7,7 +7,7 @@ namespace Booking.Data;
 
 public class BookingDbContext : AppDbContextBase
 {
-    public BookingDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor) : base(options, httpContextAccessor)
+    public BookingDbContext(DbContextOptions<BookingDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options, httpContextAccessor)
     {
     }
 

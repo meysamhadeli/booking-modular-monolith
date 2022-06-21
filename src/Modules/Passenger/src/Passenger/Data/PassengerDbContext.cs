@@ -7,7 +7,7 @@ namespace Passenger.Data;
 
 public sealed class PassengerDbContext : AppDbContextBase
 {
-    public PassengerDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor) : base(options, httpContextAccessor)
+    public PassengerDbContext(DbContextOptions<PassengerDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options, httpContextAccessor)
     {
     }
 

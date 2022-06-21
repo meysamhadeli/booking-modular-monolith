@@ -22,18 +22,14 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new(Constants.StandardScopes.FlightApi),
-            new(Constants.StandardScopes.PassengerApi),
-            new(Constants.StandardScopes.BookingApi)
+            new(Constants.StandardScopes.Booking)
         };
 
 
     public static IList<ApiResource> ApiResources =>
         new List<ApiResource>
         {
-            new(Constants.StandardScopes.FlightApi),
-            new(Constants.StandardScopes.PassengerApi),
-            new(Constants.StandardScopes.BookingApi)
+            new(Constants.StandardScopes.Booking)
         };
 
     public static IEnumerable<Client> Clients =>
@@ -54,9 +50,7 @@ public static class Config
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    Constants.StandardScopes.FlightApi,
-                    Constants.StandardScopes.PassengerApi,
-                    Constants.StandardScopes.BookingApi
+                    Constants.StandardScopes.Booking
                 }
             }
         };

@@ -19,12 +19,15 @@ public class FlightDataSeeder : IDataSeeder
         _flightDbContext = flightDbContext;
     }
 
-    public async Task SeedAllAsync()
+    public async Task SeedAllAsync<TContext>()
     {
-        await SeedAirportAsync();
-        await SeedAircraftAsync();
-        await SeedFlightAsync();
-        await SeedSeatAsync();
+        if (typeof(TContext) == typeof(FlightDbContext))
+        {
+            await SeedAirportAsync();
+            await SeedAircraftAsync();
+            await SeedFlightAsync();
+            await SeedSeatAsync();   
+        }
     }
 
     private async Task SeedAirportAsync()
@@ -65,7 +68,7 @@ public class FlightDataSeeder : IDataSeeder
         {
             var seats = new List<Seat>
             {
-                Seat.Create(1 ,"12A", SeatType.Window, SeatClass.Economy, 1),
+                Seat.Create(1, "12A", SeatType.Window, SeatClass.Economy, 1),
                 Seat.Create(2, "12B", SeatType.Window, SeatClass.Economy, 1),
                 Seat.Create(3, "12C", SeatType.Middle, SeatClass.Economy, 1),
                 Seat.Create(4, "12D", SeatType.Middle, SeatClass.Economy, 1),

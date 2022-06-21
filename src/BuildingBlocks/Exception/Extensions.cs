@@ -1,4 +1,4 @@
-using BuildingBlocks.Exception;
+﻿using Grpc.Core;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 
-namespace Passenger.Extensions;
+namespace BuildingBlocks.Exception;
 
-public static class ProblemDetailsExtensions
+public static class Extensions
 {
     public static IServiceCollection AddCustomProblemDetails(this IServiceCollection services)
     {
@@ -54,7 +54,7 @@ public static class ProblemDetailsExtensions
             x.Map<InternalServerException>(ex => new ProblemDetails
             {
                 Title = "api server exception",
-                Status = StatusCodes.Status500InternalServerError,
+                Status = StatusCodes.Status400BadRequest,
                 Detail = ex.Message,
                 Type = "https://somedomain/api-server-error"
             });
@@ -65,18 +65,22 @@ public static class ProblemDetailsExtensions
                 Detail = ex.Message,
                 Type = "https://somedomain/application-error"
             });
-            x.Map<IdentityException>(ex =>
+            x.Map<IdentityException>(ex => new ProblemDetails
             {
-                var pd = new ProblemDetails
-                {
-                    Status = (int)ex.StatusCode,
-                    Title = "identity exception",
-                    Detail = ex.Message,
-                    Type = "https://somedomain/identity-error"
-                };
-
-                return pd;
+                Status = (int)ex.StatusCode,
+                Title = "identity exception",
+                Detail = ex.Message,
+                Type = "https://somedomain/identity-error"
             });
+
+            x.Map<RpcException>(ex => new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "grpc exception",
+                Detail = ex.Status.Detail,
+                Type = "https://somedomain/grpc-error"
+            });
+
             x.MapToStatusCode<ArgumentNullException>(StatusCodes.Status400BadRequest);
         });
         return services;

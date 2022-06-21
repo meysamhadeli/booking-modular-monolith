@@ -1,0 +1,202 @@
+# https://github.com/Huachao/vscode-restclient
+@api=https://localhost:5000
+@contentType = application/json
+@flightid = 1
+@passengerId = 1
+
+################################# Identity #################################
+
+###
+# @name Authenticate
+POST {{api}}/connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password
+&client_id=client
+&client_secret=secret
+&username=meysamh
+&password=Admin@123456
+&scope=booking
+###
+
+
+
+###
+# @name Register_New_User
+POST {{api}}/identity/register-user
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+
+{
+  "firstName": "John6",
+  "lastName": "Doe6",
+  "username": "admin6",
+  "passportNumber": "1234567896",
+  "email": "admin6@admin.com",
+  "password": "Admin6@12345",
+  "confirmPassword": "Admin6@12345"
+}
+###
+
+################################# Flight #################################
+
+###
+# @name Reserve_Seat
+Post {{api}}/api/v1/flight/reserve-seat
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+
+{
+  "flightId": 1,
+  "seatNumber": "12C"
+}
+###
+
+
+###
+# @name Get_Available_Seats
+GET {{api}}/api/v1/flight/get-available-seats/{{flightid}}
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+###
+
+
+###
+# @name Get_Flight_By_Id
+GET {{api}}/api/v1/flight/{{flightid}}
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+###
+
+
+###
+# @name Get_Available_Flights
+GET {{api}}/api/v1/flight/get-available-flights
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+###
+
+
+###
+# @name Create_Flights
+POST {{api}}/api/v1/flight
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+
+{
+  "flightNumber": "123BB44",
+  "aircraftId": 1,
+  "departureAirportId": 1,
+  "departureDate": "2022-03-01T14:55:41.255Z",
+  "arriveDate": "2022-03-01T14:55:41.255Z",
+  "arriveAirportId": 2,
+  "durationMinutes": 120,
+  "flightDate": "2022-03-01T14:55:41.255Z",
+  "status": 1,
+  "price": 98000
+}
+###
+
+
+###
+# @name Update_Flights
+PUT  {{api}}/api/v1/flight
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+
+{
+  "id": 1,
+  "flightNumber": "BD467",
+  "aircraftId": 1,
+  "departureAirportId": 1,
+  "departureDate": "2022-04-23T12:17:45.140Z",
+  "arriveDate": "2022-04-23T12:17:45.140Z",
+  "arriveAirportId": 2,
+  "durationMinutes": 120,
+  "flightDate": "2022-04-23T12:17:45.140Z",
+  "status": 4,
+  "isDeleted": false,
+  "price": 99000
+}
+###
+
+###
+# @name Create_Airport
+POST {{api}}/api/v1/flight/airport
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+
+{
+  "name": "mehrabad",
+  "address": "tehran",
+  "code": "12YD"
+}
+###
+
+
+
+###
+# @name Create_Aircraft
+POST {{api}}/api/v1/flight/aircraft
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+
+{
+  "name": "airbus",
+  "model": "320",
+  "manufacturingYear": 2010
+}
+###
+
+
+################################# Passenger #################################
+
+
+###
+# @name Complete_Registration_Passenger
+POST {{api}}/api/v1/passenger/complete-registration
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+
+{
+  "passportNumber": "1234567896",
+  "passengerType": 1,
+  "age": 30
+}
+###
+
+
+###
+# @name Get_Passenger_By_Id
+GET  {{api}}/api/v1/passenger/{{passengerId}}
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+###
+
+
+################################# Booking #################################
+
+###
+# @name Create_Booking
+POST {{api}}/api/v1/booking
+accept: application/json
+Content-Type: application/json
+authorization: bearer {{Authenticate.response.body.access_token}}
+
+{
+  "passengerId": 1,
+  "flightId": 1,
+  "description": "I want to fly to iran"
+}
+###

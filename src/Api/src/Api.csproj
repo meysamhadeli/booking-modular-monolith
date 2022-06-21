@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Api</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\Booking\src\Booking\Booking.csproj" />
+    <ProjectReference Include="..\..\Modules\Flight\src\Flight\Flight.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\src\Identity\Identity.csproj" />
+    <ProjectReference Include="..\..\Modules\Passenger\src\Passenger\Passenger.csproj" />
+  </ItemGroup>
+  
+</Project>

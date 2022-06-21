@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using BuildingBlocks.Domain.Event;
 using BuildingBlocks.Web;
+using DotNetCore.CAP;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,20 +13,20 @@ public sealed class BusPublisher : IBusPublisher
 {
     private readonly IEventMapper _eventMapper;
     private readonly ILogger<BusPublisher> _logger;
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly ICapPublisher _capPublisher;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
     public BusPublisher(IServiceScopeFactory serviceScopeFactory,
         IEventMapper eventMapper,
         ILogger<BusPublisher> logger,
-        IPublishEndpoint publishEndpoint,
+        ICapPublisher capPublisher,
         IHttpContextAccessor httpContextAccessor)
     {
         _serviceScopeFactory = serviceScopeFactory;
         _eventMapper = eventMapper;
         _logger = logger;
-        _publishEndpoint = publishEndpoint;
+        _capPublisher = capPublisher;
         _httpContextAccessor = httpContextAccessor;
     }
 
@@ -44,14 +45,7 @@ public sealed class BusPublisher : IBusPublisher
 
         foreach (var integrationEvent in integrationEvents)
         {
-            await _publishEndpoint.Publish((object)integrationEvent, context =>
-            {
-                context.CorrelationId = new Guid(_httpContextAccessor.HttpContext.GetCorrelationId());
-                context.Headers.Set("UserId",
-                    _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier));
-                context.Headers.Set("UserName",
-                    _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Name));
-            }, cancellationToken);
+            await _capPublisher.PublishAsync(integrationEvent.GetType().Name, integrationEvent, cancellationToken: cancellationToken);
 
             _logger.LogTrace("Publish a message with ID: {Id}", integrationEvent?.EventId);
         }
@@ -72,14 +66,7 @@ public sealed class BusPublisher : IBusPublisher
 
         foreach (var integrationEvent in integrationEvents)
         {
-            await _publishEndpoint.Publish((object)integrationEvent, context =>
-            {
-                context.CorrelationId = new Guid(_httpContextAccessor.HttpContext.GetCorrelationId());
-                context.Headers.Set("UserId",
-                    _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier));
-                context.Headers.Set("UserName",
-                    _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Name));
-            }, cancellationToken);
+            await _capPublisher.PublishAsync(integrationEvent.GetType().Name, integrationEvent, cancellationToken: cancellationToken);
 
             _logger.LogTrace("Publish a message with ID: {Id}", integrationEvent?.EventId);
         }
