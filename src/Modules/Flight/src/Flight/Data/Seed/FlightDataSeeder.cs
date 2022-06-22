@@ -21,13 +21,13 @@ public class FlightDataSeeder : IDataSeeder
 
     public async Task SeedAllAsync<TContext>()
     {
-        if (typeof(TContext) == typeof(FlightDbContext))
-        {
-            await SeedAirportAsync();
-            await SeedAircraftAsync();
-            await SeedFlightAsync();
-            await SeedSeatAsync();   
-        }
+        if (typeof(TContext) != typeof(FlightDbContext))
+            return;
+
+        await SeedAirportAsync();
+        await SeedAircraftAsync();
+        await SeedFlightAsync();
+        await SeedSeatAsync();
     }
 
     private async Task SeedAirportAsync()

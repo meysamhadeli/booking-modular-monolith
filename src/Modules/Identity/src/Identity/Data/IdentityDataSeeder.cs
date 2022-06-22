@@ -23,11 +23,11 @@ public class IdentityDataSeeder : IDataSeeder
 
     public async Task SeedAllAsync<TContext>()
     {
-        if (typeof(TContext) == typeof(IdentityContext))
-        {
-            await SeedRoles();
-            await SeedUsers();   
-        }
+        if (typeof(TContext) != typeof(IdentityContext))
+            return;
+
+        await SeedRoles();
+        await SeedUsers();
     }
 
     private async Task SeedRoles()
@@ -58,7 +58,7 @@ public class IdentityDataSeeder : IDataSeeder
 
             if (result.Succeeded)
                 await _userManager.AddToRoleAsync(user, Constants.Role.Admin);
-            
+
             await _identityContext.SaveChangesAsync();
         }
 
@@ -77,7 +77,7 @@ public class IdentityDataSeeder : IDataSeeder
 
             if (result.Succeeded)
                 await _userManager.AddToRoleAsync(user, Constants.Role.User);
-            
+
             await _identityContext.SaveChangesAsync();
         }
     }
