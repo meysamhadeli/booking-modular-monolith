@@ -123,12 +123,10 @@ dotnet dev-certs https --trust
 
 ### Docker Compose
 
-Run this app in docker using the [docker-compose.yaml](./deployments/docker-compose/docker-compose.yaml) file with the below command at the root of the application:
+TODO 👷‍♂️
+Deployment App in Docker-Compose
 
-```bash
-docker-compose -f ./deployments/docker-compose/docker-compose.yaml up -d
-```
-Also we have a seprate docker file for up and running [infrastracture.yaml](./deployments/docker-compose/infrastracture.yaml) independently:
+We have a seprate docker file for up and running [infrastracture.yaml](./deployments/docker-compose/infrastracture.yaml) independently:
 
 ```bash
 docker-compose -f ./deployments/docker-compose/infrastracture.yaml up -d
