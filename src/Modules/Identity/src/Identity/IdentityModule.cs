@@ -7,6 +7,7 @@ using BuildingBlocks.Mapster;
 using FluentValidation;
 using Identity.Data;
 using Identity.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,7 @@ public static class IdentityModule
         services.AddCustomMapster(typeof(IdentityRoot).Assembly);
 
         services.AddCachingRequest(new List<Assembly> {typeof(IdentityRoot).Assembly});
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(EfTxIdentityBehavior<,>));
 
         return services;
     }

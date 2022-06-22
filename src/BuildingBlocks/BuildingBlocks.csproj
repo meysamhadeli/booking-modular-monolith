@@ -122,6 +122,7 @@
 
     <ItemGroup>
         <Folder Include="Contracts" />
+        <Folder Include="Domain\Model" />
         <Folder Include="EventStoreDB\BackgroundWorkers" />
     </ItemGroup>
 

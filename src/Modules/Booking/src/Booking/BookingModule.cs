@@ -9,6 +9,7 @@ using BuildingBlocks.Exception;
 using BuildingBlocks.IdsGenerator;
 using BuildingBlocks.Mapster;
 using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,7 @@ public static class BookingModule
         services.AddMagicOnion();
         
         services.AddCachingRequest(new List<Assembly> {typeof(BookingRoot).Assembly});
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(EfTxBookingBehavior<,>));
 
         return services;
     }

@@ -8,6 +8,7 @@ using BuildingBlocks.Mapster;
 using Flight.Data;
 using Flight.Data.Seed;
 using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,7 @@ public static class FlightModule
         services.AddValidatorsFromAssembly(typeof(FlightRoot).Assembly);
         services.AddCustomMapster(typeof(FlightRoot).Assembly);
         services.AddCachingRequest(new List<Assembly> {typeof(FlightRoot).Assembly});
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(EfTxFlightBehavior<,>));
 
         return services;
     }

@@ -1,26 +1,26 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using BuildingBlocks.Domain;
+using BuildingBlocks.EFCore;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace BuildingBlocks.EFCore;
+namespace Booking.Data;
 
-public class EfTxBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class EfTxBookingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull, IRequest<TResponse>
     where TResponse : notnull
 {
     private readonly ILogger<EfTxBehavior<TRequest, TResponse>> _logger;
-    private readonly IDbContext _dbContextBase;
+    private readonly BookingDbContext _bookingDbContext;
     private readonly IBusPublisher _busPublisher;
 
-    public EfTxBehavior(
+    public EfTxBookingBehavior(
         ILogger<EfTxBehavior<TRequest, TResponse>> logger,
-        IDbContext dbContextBase,
-        IBusPublisher busPublisher)
+        IBusPublisher busPublisher, BookingDbContext bookingDbContext)
     {
         _logger = logger;
-        _dbContextBase = dbContextBase;
         _busPublisher = busPublisher;
+        _bookingDbContext = bookingDbContext;
     }
 
     public async Task<TResponse> Handle(
@@ -44,7 +44,7 @@ public class EfTxBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TRe
             nameof(EfTxBehavior<TRequest, TResponse>),
             typeof(TRequest).FullName);
 
-        await _dbContextBase.BeginTransactionAsync(cancellationToken);
+        await _bookingDbContext.BeginTransactionAsync(cancellationToken);
 
         try
         {
@@ -55,17 +55,17 @@ public class EfTxBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TRe
                 nameof(EfTxBehavior<TRequest, TResponse>),
                 typeof(TRequest).FullName);
 
-            var domainEvents = _dbContextBase.GetDomainEvents();
+            var domainEvents = _bookingDbContext.GetDomainEvents();
 
             await _busPublisher.SendAsync(domainEvents.ToArray(), cancellationToken);
 
-            await _dbContextBase.CommitTransactionAsync(cancellationToken);
+            await _bookingDbContext.CommitTransactionAsync(cancellationToken);
 
             return response;
         }
         catch
         {
-            await _dbContextBase.RollbackTransactionAsync(cancellationToken);
+            await _bookingDbContext.RollbackTransactionAsync(cancellationToken);
             throw;
         }
     }

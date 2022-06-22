@@ -1,26 +1,26 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using BuildingBlocks.Domain;
+using BuildingBlocks.EFCore;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace BuildingBlocks.EFCore;
+namespace Passenger.Data;
 
-public class EfTxBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class EfTxPassengerBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull, IRequest<TResponse>
     where TResponse : notnull
 {
     private readonly ILogger<EfTxBehavior<TRequest, TResponse>> _logger;
-    private readonly IDbContext _dbContextBase;
+    private readonly PassengerDbContext _passengerDbContext;
     private readonly IBusPublisher _busPublisher;
 
-    public EfTxBehavior(
+    public EfTxPassengerBehavior(
         ILogger<EfTxBehavior<TRequest, TResponse>> logger,
-        IDbContext dbContextBase,
-        IBusPublisher busPublisher)
+        IBusPublisher busPublisher, PassengerDbContext passengerDbContext)
     {
         _logger = logger;
-        _dbContextBase = dbContextBase;
         _busPublisher = busPublisher;
+        _passengerDbContext = passengerDbContext;
     }
 
     public async Task<TResponse> Handle(
@@ -44,7 +44,7 @@ public class EfTxBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TRe
             nameof(EfTxBehavior<TRequest, TResponse>),
             typeof(TRequest).FullName);
 
-        await _dbContextBase.BeginTransactionAsync(cancellationToken);
+        await _passengerDbContext.BeginTransactionAsync(cancellationToken);
 
         try
         {
@@ -55,17 +55,17 @@ public class EfTxBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TRe
                 nameof(EfTxBehavior<TRequest, TResponse>),
                 typeof(TRequest).FullName);
 
-            var domainEvents = _dbContextBase.GetDomainEvents();
+            var domainEvents = _passengerDbContext.GetDomainEvents();
 
             await _busPublisher.SendAsync(domainEvents.ToArray(), cancellationToken);
 
-            await _dbContextBase.CommitTransactionAsync(cancellationToken);
+            await _passengerDbContext.CommitTransactionAsync(cancellationToken);
 
             return response;
         }
         catch
         {
-            await _dbContextBase.RollbackTransactionAsync(cancellationToken);
+            await _passengerDbContext.RollbackTransactionAsync(cancellationToken);
             throw;
         }
     }

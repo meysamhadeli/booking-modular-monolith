@@ -1,13 +1,12 @@
 ﻿using BuildingBlocks.Domain.Event;
-using BuildingBlocks.EventStoreDB.Events;
 using BuildingBlocks.EventStoreDB.Serialization;
 using EventStore.Client;
 
 namespace BuildingBlocks.EventStoreDB.Subscriptions;
 
-public record CheckpointStored(string SubscriptionId, ulong? Position, DateTime CheckpointedAt): IEvent;
+public record CheckpointStored(string SubscriptionId, ulong? Position, DateTime CheckpointedAt) : IEvent;
 
-public class EventStoreDBSubscriptionCheckpointRepository: ISubscriptionCheckpointRepository
+public class EventStoreDBSubscriptionCheckpointRepository : ISubscriptionCheckpointRepository
 {
     private readonly EventStoreClient eventStoreClient;
 
@@ -24,10 +23,7 @@ public class EventStoreDBSubscriptionCheckpointRepository: ISubscriptionCheckpoi
         var result = eventStoreClient.ReadStreamAsync(Direction.Backwards, streamName, StreamPosition.End, 1,
             cancellationToken: ct);
 
-        if (await result.ReadState == ReadState.StreamNotFound)
-        {
-            return null;
-        }
+        if (await result.ReadState == ReadState.StreamNotFound) return null;
 
         ResolvedEvent? @event = await result.FirstOrDefaultAsync(ct);
 
@@ -72,5 +68,8 @@ public class EventStoreDBSubscriptionCheckpointRepository: ISubscriptionCheckpoi
         }
     }
 
-    private static string GetCheckpointStreamName(string subscriptionId) => $"checkpoint_{subscriptionId}";
+    private static string GetCheckpointStreamName(string subscriptionId)
+    {
+        return $"checkpoint_{subscriptionId}";
+    }
 }

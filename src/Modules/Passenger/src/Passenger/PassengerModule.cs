@@ -5,6 +5,7 @@ using BuildingBlocks.EFCore;
 using BuildingBlocks.IdsGenerator;
 using BuildingBlocks.Mapster;
 using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ public static class PassengerModule
         services.AddValidatorsFromAssembly(typeof(PassengerRoot).Assembly);
         services.AddCustomMapster(typeof(PassengerRoot).Assembly);
         services.AddCachingRequest(new List<Assembly> {typeof(PassengerRoot).Assembly});
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(EfTxPassengerBehavior<,>));
 
         return services;
     }
