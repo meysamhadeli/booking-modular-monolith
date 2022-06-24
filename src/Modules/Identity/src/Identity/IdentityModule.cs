@@ -38,7 +38,7 @@ public static class IdentityModule
     public static IApplicationBuilder UseIdentityModules(this IApplicationBuilder app)
     {
         app.UseIdentityServer();
-        app.UseMigrationsAsync<IdentityContext>().GetAwaiter().GetResult();
+        app.UseMigration<IdentityContext>();
         return app;
     }
 }

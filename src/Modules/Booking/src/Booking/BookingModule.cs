@@ -48,7 +48,7 @@ public static class BookingModule
 
     public static IApplicationBuilder UseBookingModules(this IApplicationBuilder app)
     {
-        app.UseMigrationsAsync<BookingDbContext>().GetAwaiter().GetResult();
+        app.UseMigration<BookingDbContext>();
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapMagicOnionService();

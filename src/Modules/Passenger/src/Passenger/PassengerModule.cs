@@ -31,7 +31,7 @@ public static class PassengerModule
 
     public static IApplicationBuilder UsePassengerModules(this IApplicationBuilder app)
     {
-        app.UseMigrationsAsync<PassengerDbContext>().GetAwaiter().GetResult();
+        app.UseMigration<PassengerDbContext>();
         return app;
     }
 }

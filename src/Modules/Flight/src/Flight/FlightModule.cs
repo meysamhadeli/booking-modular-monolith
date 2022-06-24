@@ -34,7 +34,7 @@ public static class FlightModule
 
     public static IApplicationBuilder UseFlightModules(this IApplicationBuilder app)
     {
-        app.UseMigrationsAsync<FlightDbContext>().GetAwaiter().GetResult();
+        app.UseMigration<FlightDbContext>();
         return app;
     }
 }

@@ -27,11 +27,11 @@ public static class Extensions
     }
     
     
-    public static async Task<IApplicationBuilder> UseMigrationsAsync<TContext>(this IApplicationBuilder app)
+    public static IApplicationBuilder UseMigration<TContext>(this IApplicationBuilder app)
         where TContext : DbContext, IDbContext
     {
-        await MigrateDatabaseAsync<TContext>(app.ApplicationServices);
-        await SeedDataAsync<TContext>(app.ApplicationServices);
+         MigrateDatabaseAsync<TContext>(app.ApplicationServices).GetAwaiter().GetResult();
+         SeedDataAsync<TContext>(app.ApplicationServices).GetAwaiter().GetResult();
         
         return app;
     }
