@@ -79,6 +79,9 @@ High-level plan is represented in the table
 
 - `Booking Module`: The Booking Service is a bounded context for managing all operation related to booking ticket.
 
+- `Api`: The Api Project use for hosting all modules in one place.
+
+> Note: We don't have separated API project for each module because they are not microervice and shouldn't host separately, so for hosting all modules, we just use one Api project.
 
 ![](./assets/modular-monolith-diagram.jpg)
 
@@ -88,7 +91,9 @@ In this project I used a mix of [clean architecture](https://jasontaylor.dev/cle
 
 We have a separate module ([IdentityServer](https://github.com/DuendeSoftware/IdentityServer)) for authentication and authorization of each request. Once signed-in users are issued a JWT token. This token is used by other module to validate the user, read claims and allow access to authorized/role specific endpoints.
 
-I used [In-Memory Queue](https://github.com/yang-xiaodong/Savorboard.CAP.InMemoryMessageQueue) as my MessageBroker for async communication between modules using the eventual consistency mechanism. Each modules uses [Cap](https://github.com/dotnetcore/CAP) to interface with [In-Memory Queue](https://github.com/yang-xiaodong/Savorboard.CAP.InMemoryMessageQueue) for easy use messaging, availability, reliability, etc.
+I used [MagicOnion](https://github.com/Cysharp/MagicOnion) for `sync` communication between our modules. This framework is based on `gRPC`, which is a fast and compact binary network transport for HTTP/2. However, unlike plain gRPC, it treats C# interfaces as a protocol schema, enabling seamless code sharing between C# projects without .proto (Protocol Buffers IDL).
+
+I used [In-Memory Queue](https://github.com/yang-xiaodong/Savorboard.CAP.InMemoryMessageQueue) as my MessageBroker for `async` communication between modules using the eventual consistency mechanism. Each modules uses [Cap](https://github.com/dotnetcore/CAP) to interface with [In-Memory Queue](https://github.com/yang-xiaodong/Savorboard.CAP.InMemoryMessageQueue) for easy use messaging, availability, reliability, etc.
 
 modules are `event based` which means they can publish and/or subscribe to any events occurring in the setup. By using this approach for communicating between modules, each module does not need to know about the other module or handle errors occurred in other modules.
 
