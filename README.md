@@ -79,6 +79,9 @@ High-level plan is represented in the table
 
 - `Booking Module`: The Booking Service is a bounded context for managing all operation related to booking ticket.
 
+
+![](./assets/modular-monolith-diagram.jpg)
+
 ## Structure of Project
 
 In this project I used a mix of [clean architecture](https://jasontaylor.dev/clean-architecture-getting-started/), [vertical slice architecture](https://jimmybogard.com/vertical-slice-architecture/) and I used [feature folder structure](http://www.kamilgrzybek.com/design/feature-folders/) to structure my files.
