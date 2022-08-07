@@ -1,11 +1,10 @@
-![booking-modular-monolith-sample](https://socialify.git.ci/meysamhadeli/booking-modular-monolith-sample/image?description=1&descriptionEditable=Booking%20Modular%20Monolith%20is%20based%20on%20different%20software%20architecture%20and%20technologies%20like%20.Net%20Core%2C%20CQRS%2C%20DDD%2C%20Vertical%20Slice%20Architecture%2C%20Docker%2C%20kubernetes%2C%20cap%2C%20Grpc%2C%20Identity%20Server%2C%20Redis%2C%20SqlServer%2C%20Entity%20Framework%20Core%2C%20Event%20Sourcing.&forks=1&issues=1&logo=https%3A%2F%2Fcdn-icons-png.flaticon.com%2F512%2F1656%2F1656473.png&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
-
-Booking Modular Monolith is a Sample application for booking ticket. This application based on different software architecture and technologies like .Net Core, CQRS, DDD, Vertical Slice Architecture, Docker, kubernetes, cap, Grpc, Identity Server, Redis, SqlServer, Entity Framework Core, Event Sourcing.
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Gitpod live code](https://img.shields.io/badge/Gitpod-live--code-blue?logo=gitpod&style=flat-square&color=ff69b4)](https://gitpod.io/#https://github.com/meysamhadeli/booking-modular-monolith)
 
-🌀 This repository is a work in progress and will be completed over time 🚀
+![](./assets/booking-modular-monolith.png)
+
+
+> **The main idea of creating this project is implementing an infrastructure for up and running Modular Monolith with the latest technology and architecture like Vertical Slice Architecture, CQRS, DDD, gRpc, RabbitMq, Cap in .Net, and we will not deal mainly with business.** 🚀
 
 # Table of Contents
 
@@ -34,7 +33,7 @@ Booking Modular Monolith is a Sample application for booking ticket. This applic
 
 ## Plan
 
-> This project is a work in progress, new features will be added over time.
+> 🌀This project is a work in progress, new features will be added over time.🌀
 
 I will try to register future goals and additions in the [Issues](https://github.com/meysamhadeli/booking-modular-monolith-sample/issues) section of this repository.
 
