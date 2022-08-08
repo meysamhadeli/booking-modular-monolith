@@ -5,7 +5,7 @@
 
 # Booking Modular Monolith
 
-The main idea of creating this project is implementing an infrastructure for up and running Modular Monolith with the latest technology and architecture like Vertical Slice Architecture, CQRS, DDD, gRpc, RabbitMq, Cap in .Net, and we will not deal mainly with business.🚀
+The main idea of creating this project is implementing an infrastructure for up and running Modular Monolith with the latest technology and architecture like Vertical Slice Architecture, CQRS, DDD, gRpc, RabbitMq, Cap in .Net, and we will not deal mainly with business.
 
 # Table of Contents
 
