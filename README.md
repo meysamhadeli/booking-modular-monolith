@@ -3,8 +3,9 @@
 
 ![](./assets/booking-modular-monolith.png)
 
+# Booking Modular Monolith
 
-> **The main idea of creating this project is implementing an infrastructure for up and running Modular Monolith with the latest technology and architecture like Vertical Slice Architecture, CQRS, DDD, gRpc, RabbitMq, Cap in .Net, and we will not deal mainly with business.** 🚀
+The main idea of creating this project is implementing an infrastructure for up and running Modular Monolith with the latest technology and architecture like Vertical Slice Architecture, CQRS, DDD, gRpc, RabbitMq, Cap in .Net, and we will not deal mainly with business.
 
 # Table of Contents
 
@@ -35,7 +36,7 @@
 
 > 🌀This project is a work in progress, new features will be added over time.🌀
 
-I will try to register future goals and additions in the [Issues](https://github.com/meysamhadeli/booking-modular-monolith-sample/issues) section of this repository.
+I will try to register future goals and additions in the [Issues](https://github.com/meysamhadeli/booking-modular-monolith/issues) section of this repository.
 
 High-level plan is represented in the table
 
@@ -155,7 +156,7 @@ Thanks a bunch for supporting me!
 
 ## Contribution
 
-Thanks to all [contributors](https://github.com/meysamhadeli/booking-modular-monolith-sample/graphs/contributors), you're awesome and this wouldn't be possible without you! The goal is to build a categorized community-driven collection of very well-known resources.
+Thanks to all [contributors](https://github.com/meysamhadeli/booking-modular-monolith/graphs/contributors), you're awesome and this wouldn't be possible without you! The goal is to build a categorized community-driven collection of very well-known resources.
 
 ## Project References & Credits
 
@@ -166,4 +167,4 @@ Thanks to all [contributors](https://github.com/meysamhadeli/booking-modular-mon
 - [https://github.com/jasontaylordev/CleanArchitecture](https://github.com/jasontaylordev/CleanArchitecture)
 
 ## License
-This project is made available under the MIT license. See [LICENSE](https://github.com/meysamhadeli/booking-modular-monolith-sample/blob/main/LICENSE) for details.
+This project is made available under the MIT license. See [LICENSE](https://github.com/meysamhadeli/booking-modular-monolith/blob/main/LICENSE) for details.
