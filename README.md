@@ -1,6 +1,5 @@
 <div align="center" style="margin-bottom:20px">
-  <img src="assets/booking-modular-monolith.png" alt="booking-modular-monolith" />
-       <h1>Booking Modular Monolith</h1>
+  <img src="assets/logo.png" alt="booking-modular-monolith" />
     <div align="center">
            <a href="https://github.com/meysamhadeli/booking-modular-monolith/actions/workflows/dotnet.yml"><img alt="build-status" src="https://github.com/meysamhadeli/booking-modular-monolith/actions/workflows/dotnet.yml/badge.svg?branch=main&style=flat-square"/></a>
          <a href="https://gitpod.io/#https://github.com/meysamhadeli/booking-modular-monolith"><img src="https://img.shields.io/badge/Gitpod-live--code-blue?logo=gitpod&style=flat-square&color=ff69b4"/></a>
