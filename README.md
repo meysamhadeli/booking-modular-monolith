@@ -30,7 +30,7 @@ The main idea of creating this project is implementing an infrastructure for up 
 - :sparkle: Using `InMememoryBroker` on top of `Cap` for `Event Driven Architecture` between our modules.
 - :sparkle: Using `CQRS` implementation with `MediatR` library.
 - :sparkle: Using `SqlServer` for database in our modules.
-- :sparkle: Using `Event Store` for `write side` of Booking-Microservice to store all `historical state` of aggregate.
+- :sparkle: Using `Event Store` for `write side` of Booking-Module to store all `historical state` of aggregate.
 - :sparkle: Using `Unit Testing`, `Integration Testing` for testing level.
 - :sparkle: Using `Fluent Validation` and a `Validation Pipeline Behaviour` on top of `MediatR`.
 - :sparkle: Using `Docker-Compose` and `Kubernetes` for our deployment mechanism.
