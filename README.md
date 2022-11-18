@@ -25,14 +25,17 @@ The main idea of creating this project is implementing an infrastructure for up 
 
 ## The Goals of This Project
 
-- Modular Monolith based on `Domain Driven Design (DDD)` implementation.
-- Correct `separation of bounded contexts` for each module.
-- Communication between bounded contexts (modules) through asynchronous `MessageBus` and `events`.
-- Communication internally between our modules with `gRPC` synchronously.
-- Simple `CQRS` implementation and Event Driven Architecture.
-- Using `event store` to store all historical state of aggregate. (Bookin Module)
-- Using `Best Practice` and `New Technologies` and `Design Patterns`.
-- Using `Docker-Compose` and `Kubernetes` for our deployment mechanism.
+- :sparkle: Using `Vertical Slice Architecture` for architecture level.
+- :sparkle: Using `Domain Driven Design (DDD)` to implement all business processes in modules.
+- :sparkle: Using `InMememoryBroker` on top of `Cap` for `Event Driven Architecture` between our modules.
+- :sparkle: Using `CQRS` implementation with `MediatR` library.
+- :sparkle: Using `SqlServer` for database in our modules.
+- :sparkle: Using `Event Store` for `write side` of Booking-Microservice to store all `historical state` of aggregate.
+- :sparkle: Using `Unit Testing`, `Integration Testing` for testing level.
+- :sparkle: Using `Fluent Validation` and a `Validation Pipeline Behaviour` on top of `MediatR`.
+- :sparkle: Using `Docker-Compose` and `Kubernetes` for our deployment mechanism.
+- :sparkle: Using `OpenTelemetry` for distributed tracing.
+- :sparkle: Using `IdentityServer` for implementation authentication and authorization base on `OpenID-Connect` and `OAuth2`.
 
 ## Plan
 
