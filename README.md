@@ -2,12 +2,13 @@
   <img src="assets/logo.png" alt="booking-modular-monolith" />
     <div align="center">
            <a href="https://github.com/meysamhadeli/booking-modular-monolith/actions/workflows/dotnet.yml"><img alt="build-status" src="https://github.com/meysamhadeli/booking-modular-monolith/actions/workflows/dotnet.yml/badge.svg?branch=main&style=flat-square"/></a>
-         <a href="https://gitpod.io/#https://github.com/meysamhadeli/booking-modular-monolith"><img src="https://img.shields.io/badge/Gitpod-live--code-blue?logo=gitpod&style=flat-square&color=ff69b4"/></a>
                  <a href="https://github.com/meysamhadeli/booking-modular-monolith/blob/main/LICENSE"><img alt="build-status"          src="https://img.shields.io/github/license/meysamhadeli/booking-modular-monolith?color=%234275f5&style=flat-square"/></a>
     </div>   
 </div>
 
 The main idea of creating this project is implementing an infrastructure for up and running Modular Monolith with the latest technology and architecture like Vertical Slice Architecture, CQRS, DDD, gRpc, RabbitMq, Cap in .Net, and we will not deal mainly with business.
+
+<a href="https://gitpod.io/#https://github.com/meysamhadeli/booking-modular-monolith"><img alt="Open in Gitpod" src="https://gitpod.io/button/open-in-gitpod.svg"/></a>
 
 # Table of Contents
 
