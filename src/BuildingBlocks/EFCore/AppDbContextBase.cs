@@ -19,14 +19,16 @@ public abstract class AppDbContextBase : DbContext, IDbContext
     {
         _httpContextAccessor = httpContextAccessor;
     }
+    
+    public IExecutionStrategy CreateExecutionStrategy() => Database.CreateExecutionStrategy();
 
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
         if (_currentTransaction != null) return;
-
+    
         _currentTransaction = await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
     }
-
+    
     public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
     {
         try
@@ -63,6 +65,27 @@ public abstract class AppDbContextBase : DbContext, IDbContext
     {
         OnBeforeSaving();
         return base.SaveChangesAsync(cancellationToken);
+    }
+    
+    //ref: https://learn.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency#execution-strategies-and-transactions
+    public Task ExecuteTransactionalAsync(CancellationToken cancellationToken = default)
+    {
+        var strategy = Database.CreateExecutionStrategy();
+        return strategy.ExecuteAsync(async () =>
+        {
+            await using var transaction =
+                await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+            try
+            {
+                await SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+        });
     }
 
     public IReadOnlyList<IDomainEvent> GetDomainEvents()

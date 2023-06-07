@@ -10,17 +10,17 @@ public class EfTxBookingBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
     where TRequest : notnull, IRequest<TResponse>
     where TResponse : notnull
 {
-    private readonly ILogger<EfTxBehavior<TRequest, TResponse>> _logger;
-    private readonly BookingDbContext _bookingDbContext;
+    private readonly ILogger<EfTxBookingBehavior<TRequest, TResponse>> _logger;
+    private readonly BookingDbContext _dbContext;
     private readonly IBusPublisher _busPublisher;
 
     public EfTxBookingBehavior(
-        ILogger<EfTxBehavior<TRequest, TResponse>> logger,
-        IBusPublisher busPublisher, BookingDbContext bookingDbContext)
+        ILogger<EfTxBookingBehavior<TRequest, TResponse>> logger,
+        IBusPublisher busPublisher, BookingDbContext dbContext)
     {
         _logger = logger;
         _busPublisher = busPublisher;
-        _bookingDbContext = bookingDbContext;
+        _dbContext = dbContext;
     }
 
     public async Task<TResponse> Handle(
@@ -30,43 +30,38 @@ public class EfTxBookingBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
     {
         _logger.LogInformation(
             "{Prefix} Handled command {MediatrRequest}",
-            nameof(EfTxBehavior<TRequest, TResponse>),
+            nameof(EfTxBookingBehavior<TRequest, TResponse>),
             typeof(TRequest).FullName);
 
         _logger.LogDebug(
             "{Prefix} Handled command {MediatrRequest} with content {RequestContent}",
-            nameof(EfTxBehavior<TRequest, TResponse>),
+            nameof(EfTxBookingBehavior<TRequest, TResponse>),
             typeof(TRequest).FullName,
             JsonSerializer.Serialize(request));
 
         _logger.LogInformation(
             "{Prefix} Open the transaction for {MediatrRequest}",
-            nameof(EfTxBehavior<TRequest, TResponse>),
+            nameof(EfTxBookingBehavior<TRequest, TResponse>),
             typeof(TRequest).FullName);
 
-        await _bookingDbContext.BeginTransactionAsync(cancellationToken);
 
-        try
+        var response = await next();
+
+        while (true)
         {
-            var response = await next();
-
             _logger.LogInformation(
                 "{Prefix} Executed the {MediatrRequest} request",
-                nameof(EfTxBehavior<TRequest, TResponse>),
+                nameof(EfTxBookingBehavior<TRequest, TResponse>),
                 typeof(TRequest).FullName);
 
-            var domainEvents = _bookingDbContext.GetDomainEvents();
+            var domainEvents = _dbContext.GetDomainEvents();
 
             await _busPublisher.SendAsync(domainEvents.ToArray(), cancellationToken);
 
-            await _bookingDbContext.CommitTransactionAsync(cancellationToken);
-
+            // ref: https://learn.microsoft.com/en-us/ef/ef6/fundamentals/connection-resiliency/retry-logic?redirectedfrom=MSDN#solution-manually-call-execution-strategy
+            await _dbContext.ExecuteTransactionalAsync(cancellationToken);
+            
             return response;
-        }
-        catch
-        {
-            await _bookingDbContext.RollbackTransactionAsync(cancellationToken);
-            throw;
         }
     }
 }

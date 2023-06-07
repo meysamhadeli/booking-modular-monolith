@@ -23,7 +23,7 @@ var env = builder.Environment;
 var appOptions = builder.Services.GetOptions<AppOptions>("AppOptions");
 Console.WriteLine(FiggleFonts.Standard.Render(appOptions.Name));
 
-builder.AddCustomSerilog();
+builder.AddCustomSerilog(env);
 builder.Services.AddJwt();
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
@@ -31,7 +31,13 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddCustomCap();
 builder.Services.AddTransient<IBusPublisher, BusPublisher>();
 builder.Services.AddCustomVersioning();
-builder.Services.AddCustomSwagger(configuration, Assembly.GetExecutingAssembly());
+
+builder.Services.AddCustomSwagger(configuration,
+    typeof(FlightRoot).Assembly,
+    typeof(IdentityRoot).Assembly,
+    typeof(PassengerModule).Assembly,
+    typeof(BookingRoot).Assembly);
+
 builder.Services.AddCustomProblemDetails();
 
 builder.Services.AddFlightModules(configuration);
@@ -41,7 +47,12 @@ builder.Services.AddIdentityModules(configuration, env);
 
 builder.Services.AddEasyCaching(options => { options.UseInMemory(configuration, "mem"); });
 
-builder.Services.AddCustomMediatR();
+builder.Services.AddCustomMediatR(
+    typeof(FlightRoot).Assembly,
+    typeof(IdentityRoot).Assembly,
+    typeof(PassengerModule).Assembly,
+    typeof(BookingRoot).Assembly
+);
 
 var app = builder.Build();
 

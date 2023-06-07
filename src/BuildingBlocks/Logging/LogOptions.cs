@@ -1,8 +1,12 @@
-﻿namespace BuildingBlocks.Logging;
-
-public class LogOptions
+﻿namespace BuildingBlocks.Logging
 {
-    public string Level { get; set; }
-    public string LogTemplate { get; set; }
-    public string ElasticUri { get; set; }
+    public class LogOptions
+    {
+        public string Level { get; set; }
+        public ElasticOptions Elastic { get; set; }
+
+        public SentryOptions Sentry { get; set; }
+        public FileOptions File { get; set; }
+        public string LogTemplate { get; set; }
+    }
 }

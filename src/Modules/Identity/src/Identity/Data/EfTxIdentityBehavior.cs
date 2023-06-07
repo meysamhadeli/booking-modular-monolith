@@ -3,7 +3,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using BuildingBlocks.Domain;
-using BuildingBlocks.EFCore;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -13,17 +12,17 @@ public class EfTxIdentityBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
     where TRequest : notnull, IRequest<TResponse>
     where TResponse : notnull
 {
-    private readonly ILogger<EfTxBehavior<TRequest, TResponse>> _logger;
-    private readonly IdentityContext _identityContext;
+    private readonly ILogger<EfTxIdentityBehavior<TRequest, TResponse>> _logger;
+    private readonly IdentityContext _dbContext;
     private readonly IBusPublisher _busPublisher;
 
     public EfTxIdentityBehavior(
-        ILogger<EfTxBehavior<TRequest, TResponse>> logger,
-        IBusPublisher busPublisher, IdentityContext identityContext)
+        ILogger<EfTxIdentityBehavior<TRequest, TResponse>> logger,
+        IBusPublisher busPublisher, IdentityContext dbContext)
     {
         _logger = logger;
         _busPublisher = busPublisher;
-        _identityContext = identityContext;
+        _dbContext = dbContext;
     }
 
     public async Task<TResponse> Handle(
@@ -33,43 +32,38 @@ public class EfTxIdentityBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
     {
         _logger.LogInformation(
             "{Prefix} Handled command {MediatrRequest}",
-            nameof(EfTxBehavior<TRequest, TResponse>),
+            nameof(EfTxIdentityBehavior<TRequest, TResponse>),
             typeof(TRequest).FullName);
 
         _logger.LogDebug(
             "{Prefix} Handled command {MediatrRequest} with content {RequestContent}",
-            nameof(EfTxBehavior<TRequest, TResponse>),
+            nameof(EfTxIdentityBehavior<TRequest, TResponse>),
             typeof(TRequest).FullName,
             JsonSerializer.Serialize(request));
 
         _logger.LogInformation(
             "{Prefix} Open the transaction for {MediatrRequest}",
-            nameof(EfTxBehavior<TRequest, TResponse>),
+            nameof(EfTxIdentityBehavior<TRequest, TResponse>),
             typeof(TRequest).FullName);
 
-        await _identityContext.BeginTransactionAsync(cancellationToken);
 
-        try
+        var response = await next();
+
+        while (true)
         {
-            var response = await next();
-
             _logger.LogInformation(
                 "{Prefix} Executed the {MediatrRequest} request",
-                nameof(EfTxBehavior<TRequest, TResponse>),
+                nameof(EfTxIdentityBehavior<TRequest, TResponse>),
                 typeof(TRequest).FullName);
 
-            var domainEvents = _identityContext.GetDomainEvents();
+            var domainEvents = _dbContext.GetDomainEvents();
 
             await _busPublisher.SendAsync(domainEvents.ToArray(), cancellationToken);
 
-            await _identityContext.CommitTransactionAsync(cancellationToken);
-
+            // ref: https://learn.microsoft.com/en-us/ef/ef6/fundamentals/connection-resiliency/retry-logic?redirectedfrom=MSDN#solution-manually-call-execution-strategy
+            await _dbContext.ExecuteTransactionalAsync(cancellationToken);
+            
             return response;
-        }
-        catch
-        {
-            await _identityContext.RollbackTransactionAsync(cancellationToken);
-            throw;
         }
     }
 }

@@ -16,10 +16,18 @@ public static class Extensions
         IConfiguration configuration)
         where TContext : DbContext, IDbContext
     {
+
         services.AddDbContext<TContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString(connectionName),
-                x => x.MigrationsAssembly(typeof(TContext).Assembly.GetName().Name)));
+        {
+            options.UseSqlServer(configuration.GetConnectionString(connectionName),
+                dbOptions =>
+                {
+                    dbOptions.MigrationsAssembly(typeof(TContext).Assembly.GetName().Name);
+                    //ref: https://learn.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
+                    dbOptions.EnableRetryOnFailure(3, TimeSpan.FromSeconds(1), null);
+                });
+        });
+
 
         services.AddScoped<IDbContext>(provider => provider.GetService<TContext>());
         

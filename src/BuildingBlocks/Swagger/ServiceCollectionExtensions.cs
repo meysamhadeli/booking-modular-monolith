@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddCustomSwagger(this IServiceCollection services,
         IConfiguration configuration,
-        Assembly assembly, string swaggerSectionName = "SwaggerOptions")
+        params Assembly[] assemblies)
     {
         services.AddVersionedApiExplorer(options =>
         {
@@ -31,7 +31,7 @@ public static class ServiceCollectionExtensions
             options.SubstituteApiVersionInUrl = true;
         });
 
-        services.AddOptions<SwaggerOptions>().Bind(configuration.GetSection(swaggerSectionName))
+        services.AddOptions<SwaggerOptions>().Bind(configuration.GetSection(nameof(SwaggerOptions)))
             .ValidateDataAnnotations();
 
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -41,8 +41,12 @@ public static class ServiceCollectionExtensions
             {
                 // options.DescribeAllParametersInCamelCase();
                 options.OperationFilter<SwaggerDefaultValues>();
-                var xmlFile = XmlCommentsFilePath(assembly);
-                if (File.Exists(xmlFile)) options.IncludeXmlComments(xmlFile);
+
+                foreach (var assembly in assemblies)
+                {
+                    var xmlFile = XmlCommentsFilePath(assembly);
+                    if (File.Exists(xmlFile)) options.IncludeXmlComments(xmlFile);   
+                }
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

@@ -74,6 +74,29 @@ public sealed class IdentityContext : IdentityDbContext<ApplicationUser, Identit
             _currentTransaction = null;
         }
     }
+    
+    //ref: https://learn.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency#execution-strategies-and-transactions
+    public Task ExecuteTransactionalAsync(CancellationToken cancellationToken = default)
+    {
+        var strategy = Database.CreateExecutionStrategy();
+        return strategy.ExecuteAsync(async () =>
+        {
+            await using var transaction =
+                await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+            try
+            {
+                await SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+        });
+    }
+
+    public IExecutionStrategy CreateExecutionStrategy() => Database.CreateExecutionStrategy();
 
     public IReadOnlyList<IDomainEvent> GetDomainEvents()
     {

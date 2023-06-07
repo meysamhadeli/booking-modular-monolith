@@ -24,6 +24,7 @@ public static class PassengerModule
         services.AddValidatorsFromAssembly(typeof(PassengerRoot).Assembly);
         services.AddCustomMapster(typeof(PassengerRoot).Assembly);
         services.AddCachingRequest(new List<Assembly> {typeof(PassengerRoot).Assembly});
+        
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(EfTxPassengerBehavior<,>));
 
         return services;

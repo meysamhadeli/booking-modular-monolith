@@ -41,8 +41,9 @@ public static class BookingModule
         services.AddMagicOnion();
         
         services.AddCachingRequest(new List<Assembly> {typeof(BookingRoot).Assembly});
+        
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(EfTxBookingBehavior<,>));
-
+        
         return services;
     }
 
