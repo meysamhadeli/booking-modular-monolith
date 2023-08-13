@@ -6,7 +6,7 @@ services:
     #######################################################
   db:
     container_name: sqldb
-    image: mcr.microsoft.com/mssql/server:2017-latest
+    image: mcr.microsoft.com/mssql/server
     restart: unless-stopped
     ports:
       - "1433:1433"
@@ -81,7 +81,8 @@ services:
     #######################################################
   elasticsearch:
    container_name: elasticsearch
-   image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+   image: elasticsearch:7.17.9
+   restart: unless-stopped
    ports:
     - 9200:9200
    volumes:
@@ -99,7 +100,8 @@ services:
     #######################################################
   kibana:
    container_name: kibana
-   image: docker.elastic.co/kibana/kibana:7.9.2
+   image: kibana:7.17.9
+   restart: unless-stopped
    ports:
     - 5601:5601
    depends_on:
@@ -117,11 +119,7 @@ networks:
 
 
 volumes:
-  db-data:
-    external: false
-  mongo:
-    driver: local
-  elasticsearch-data:  
+  elasticsearch-data:
 
 
 
