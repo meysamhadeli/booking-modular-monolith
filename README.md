@@ -19,8 +19,12 @@ The main idea of creating this project is implementing an infrastructure for up 
 - [Structure of Project](#structure-of-project)
 - [Prerequisites](#prerequisites)
 - [How to Run](#how-to-run)
+  - [Config Certificate](#config-certificate)
   - [Docker Compose](#docker-compose)
-  - [Kubernetes](#kubernetes)
+  - [Build](#build)
+  - [Run](#run)
+  - [Test](#test)
+- [Documentation Apis](#documentation-apis)   
 - [Support](#support)
 - [Contribution](#contribution)
 
@@ -151,10 +155,29 @@ We have a seprate docker file for up and running [infrastracture.yaml](./deploym
 docker-compose -f ./deployments/docker-compose/infrastracture.yaml up -d
 ```
 
+> ### Build
+For `building` all microservices, Run this command in root of project:
+```bash
+dotnet build
+```
+
+> ### Run
+For `runing` each microservice, Run this command in root of `Api` folder of each microservice where `csproj` located:
+```bash
+dotnet run
+```
+
+> ### Test
+
+For `testing` all microservices, Run this command in root of project:
+```bash
+dotnet test
+```
+
 ### Documentation Apis
 
-All modules uses swagger open api, navigate to /swagger for a list of every endpoint.
-For testing apis I used the [REST Client](https://github.com/Huachao/vscode-restclient) plugin for VSCode running this file [booking.rest](./booking.rest).
+Each microservice uses swagger open api, navigate to `/swagger` for getting the list endpoints.
+Also, to test apis, I created the [booking.rest](./booking.rest) file. This file run with [REST Client](https://github.com/Huachao/vscode-restclient) `VSCode plugin`.
 
 # Support
 
