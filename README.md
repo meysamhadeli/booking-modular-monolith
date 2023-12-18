@@ -156,7 +156,7 @@ docker-compose -f ./deployments/docker-compose/infrastracture.yaml up -d
 ```
 
 > ### Build
-For `building` all microservices, Run this command in root of project:
+For `building` all microservices, Run this command in `root` of project:
 ```bash
 dotnet build
 ```
@@ -169,7 +169,7 @@ dotnet run
 
 > ### Test
 
-For `testing` all microservices, Run this command in root of project:
+For `testing` all microservices, Run this command in `root` of project:
 ```bash
 dotnet test
 ```
