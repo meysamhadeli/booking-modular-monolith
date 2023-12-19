@@ -146,39 +146,39 @@ dotnet dev-certs https --trust
 
 ### Docker Compose
 
-TODO 👷‍♂️
-Deployment App in Docker-Compose
-
-We have a seprate docker file for up and running [infrastracture.yaml](./deployments/docker-compose/infrastracture.yaml) independently:
+We have a separate Docker file for setting up and running the [infrastracture.yaml](./deployments/docker-compose/infrastracture.yaml) independently.
 
 ```bash
 docker-compose -f ./deployments/docker-compose/infrastracture.yaml up -d
 ```
 
+TODO 👷‍♂️
+Deployment App in Docker-Compose
+
 > ### Build
-For `building` all microservices, Run this command in `root` of project:
+To `build` all microservices, run this command in the `root` of the project:
 ```bash
 dotnet build
 ```
 
 > ### Run
-For `runing` each microservice, Run this command in root of `Api` folder of each microservice where `csproj` located:
+To `run` each microservice, run this command in the root of the `Api` folder of each microservice where the `csproj` file is located:
 ```bash
 dotnet run
 ```
 
 > ### Test
 
-For `testing` all microservices, Run this command in `root` of project:
+To `test` all microservices, run this command in the `root` of the project:
 ```bash
 dotnet test
 ```
 
-### Documentation Apis
+> ### Documentation Apis
 
-Each microservice uses swagger open api, navigate to `/swagger` for getting the list endpoints.
+Each microservice has a `Swagger OpenAPI`. Browse to `/swagger` for a list of endpoints.
 
-Also, to test apis, I created the [booking.rest](./booking.rest) file. This file run with [REST Client](https://github.com/Huachao/vscode-restclient) `VSCode plugin`.
+As part of API testing, I created the [booking.rest](./booking.rest) file which can be run with the [REST Client](https://github.com/Huachao/vscode-restclient) `VSCode plugin`.
 
 # Support
 
