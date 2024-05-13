@@ -8,7 +8,7 @@
 
 > 🚀 **A practical and imaginary Modular Monolith for implementing an infrastructure for up and running Modular system with the latest technology and architecture like Vertical Slice Architecture, Event Sourcing, CQRS, DDD, gRpc, MongoDB, RabbitMq, Masstransit in .Net 8.**
 
-> 💡 **This project not business oriented and most of my focus was in the thechnical part for implement a Modular system with a sample project. In this project I implemented some concept in Modular Monolith like Inmemory Broker, Tracing, Event Driven Architecture, Vertical Slice Architecture, Event Sourcing, CQRS, DDD and gRpc.**
+> 💡 **This project is not business-oriented and most of my focus was in the thechnical part for implement a Modular system with a sample project. In this project I implemented some concept in Modular Monolith like Inmemory Broker, Tracing, Event Driven Architecture, Vertical Slice Architecture, Event Sourcing, CQRS, DDD and gRpc.**
 
 <a href="https://gitpod.io/#https://github.com/meysamhadeli/booking-modular-monolith"><img alt="Open in Gitpod" src="https://gitpod.io/button/open-in-gitpod.svg"/></a>
 
