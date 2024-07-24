@@ -21,7 +21,7 @@ public static class Extensions
         {
             x.UseInMemoryStorage();
             x.UseInMemoryMessageQueue();
-            
+
             x.UseDashboard();
             x.FailedRetryCount = 5;
             x.FailedThresholdCallback = failed =>
@@ -40,11 +40,13 @@ public static class Extensions
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
-        services.AddOpenTelemetryTracing(builder => builder
-            .AddAspNetCoreInstrumentation()
-            .AddCapInstrumentation()
-            .AddJaegerExporter()
-        );
+        services.AddOpenTelemetry()
+        .WithTracing(tracing =>
+        {
+            tracing.AddAspNetCoreInstrumentation()
+              .AddCapInstrumentation()
+              .AddJaegerExporter();
+        });
 
         return services;
     }

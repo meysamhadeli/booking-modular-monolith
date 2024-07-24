@@ -25,15 +25,12 @@ public class EfTxIdentityBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
         _dbContext = dbContext;
     }
 
-    public async Task<TResponse> Handle(
-        TRequest request,
-        CancellationToken cancellationToken,
-        RequestHandlerDelegate<TResponse> next)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         _logger.LogInformation(
-            "{Prefix} Handled command {MediatrRequest}",
-            nameof(EfTxIdentityBehavior<TRequest, TResponse>),
-            typeof(TRequest).FullName);
+     "{Prefix} Handled command {MediatrRequest}",
+     nameof(EfTxIdentityBehavior<TRequest, TResponse>),
+     typeof(TRequest).FullName);
 
         _logger.LogDebug(
             "{Prefix} Handled command {MediatrRequest} with content {RequestContent}",
@@ -62,7 +59,7 @@ public class EfTxIdentityBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
 
             // ref: https://learn.microsoft.com/en-us/ef/ef6/fundamentals/connection-resiliency/retry-logic?redirectedfrom=MSDN#solution-manually-call-execution-strategy
             await _dbContext.ExecuteTransactionalAsync(cancellationToken);
-            
+
             return response;
         }
     }
