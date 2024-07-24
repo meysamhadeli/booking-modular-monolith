@@ -1,12 +1,12 @@
-using AutoMapper;
+using Mapster;
 using Passenger.Passengers.Dtos;
 
 namespace Passenger.Passengers.Features;
 
-public class ReservationMappings: Profile
+public class ReservationMappings : IRegister
 {
-    public ReservationMappings()
+    public void Register(TypeAdapterConfig config)
     {
-        CreateMap<Models.Passenger, PassengerResponseDto>();
+        config.NewConfig<Models.Passenger, PassengerResponseDto>();
     }
 }

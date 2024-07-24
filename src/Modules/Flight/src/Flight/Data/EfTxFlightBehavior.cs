@@ -3,7 +3,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using BuildingBlocks.Domain;
-using BuildingBlocks.EFCore;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -26,15 +25,12 @@ public class EfTxFlightBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         _dbContext = dbContext;
     }
 
-    public async Task<TResponse> Handle(
-        TRequest request,
-        CancellationToken cancellationToken,
-        RequestHandlerDelegate<TResponse> next)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         _logger.LogInformation(
-            "{Prefix} Handled command {MediatrRequest}",
-            nameof(EfTxFlightBehavior<TRequest, TResponse>),
-            typeof(TRequest).FullName);
+    "{Prefix} Handled command {MediatrRequest}",
+    nameof(EfTxFlightBehavior<TRequest, TResponse>),
+    typeof(TRequest).FullName);
 
         _logger.LogDebug(
             "{Prefix} Handled command {MediatrRequest} with content {RequestContent}",
@@ -63,7 +59,7 @@ public class EfTxFlightBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
             // ref: https://learn.microsoft.com/en-us/ef/ef6/fundamentals/connection-resiliency/retry-logic?redirectedfrom=MSDN#solution-manually-call-execution-strategy
             await _dbContext.ExecuteTransactionalAsync(cancellationToken);
-            
+
             return response;
         }
     }
