@@ -39,30 +39,28 @@ services:
     #######################################################
     #  EventStoreDB
     #######################################################
-  eventstore.db:
-      image: eventstore/eventstore:21.2.0-buster-slim
-      restart: on-failure
-      environment:
-          - EVENTSTORE_CLUSTER_SIZE=1
-          - EVENTSTORE_RUN_PROJECTIONS=All
-          - EVENTSTORE_START_STANDARD_PROJECTIONS=true
-          - EVENTSTORE_EXT_TCP_PORT=1010
-          - EVENTSTORE_EXT_HTTP_PORT=2113
-          - EVENTSTORE_INSECURE=true
-          - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
-          - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
-      ports:
-          - '1010:1113'
-          - '2113:2113'
-      networks:
-          - booking
+  eventstore:
+    container_name: eventstore
+    image: eventstore/eventstore:latest
+    restart: unless-stopped
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=True
+      - EVENTSTORE_HTTP_PORT=2113
+      - EVENTSTORE_INSECURE=True
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=True
+    ports:
+      - "2113:2113"
+    networks:
+      - booking
 
 
     #######################################################
     #  Mongo
     #######################################################
   mongo:
-    image: mongo
+    image: mongo:latest
     container_name: mongo
     restart: unless-stopped
     # environment:
@@ -72,51 +70,46 @@ services:
       - booking
     ports:
       - 27017:27017
-    volumes:
-      - mongo:/data/db
       
 
     #######################################################
     #  Elastic Search
     #######################################################
   elasticsearch:
-   container_name: elasticsearch
-   image: elasticsearch:7.17.9
-   restart: unless-stopped
-   ports:
-    - 9200:9200
-   volumes:
-    - elasticsearch-data:/usr/share/elasticsearch/data
-   environment:
-    - xpack.monitoring.enabled=true
-    - xpack.watcher.enabled=false
-    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    - discovery.type=single-node
-   networks:
-    - booking
+    container_name: elasticsearch
+    image: elasticsearch:7.17.9
+    restart: unless-stopped
+    ports:
+      - 9200:9200
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    environment:
+      - xpack.monitoring.enabled=true
+      - xpack.watcher.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    networks:
+      - booking
 
     #######################################################
     #  Kibana
     #######################################################
   kibana:
-   container_name: kibana
-   image: kibana:7.17.9
-   restart: unless-stopped
-   ports:
-    - 5601:5601
-   depends_on:
-    - elasticsearch
-   environment:
-    - ELASTICSEARCH_URL=http://localhost:9200
-   networks:
-    - booking
+    container_name: kibana
+    image: kibana:7.17.9
+    restart: unless-stopped
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_URL=http://localhost:9200
+    networks:
+      - booking
   
-
 
 networks:
   booking:
-    name: booking
-
 
 volumes:
   elasticsearch-data:
