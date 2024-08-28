@@ -1,4 +1,5 @@
 using BuildingBlocks.Web;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ namespace Passenger.Passengers.Features.GetPassengerById;
 public class GetPassengerByIdEndpoint : BaseController
 {
     [HttpGet("{id}")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [SwaggerOperation(Summary = "Get passenger by id", Description = "Get passenger by id")]
