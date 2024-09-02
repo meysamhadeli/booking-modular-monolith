@@ -1,4 +1,5 @@
 using BuildingBlocks.Web;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

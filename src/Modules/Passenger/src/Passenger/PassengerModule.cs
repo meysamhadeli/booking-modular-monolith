@@ -30,9 +30,9 @@ public static class PassengerModule
         return services;
     }
 
-    public static IApplicationBuilder UsePassengerModules(this IApplicationBuilder app)
+    public static IApplicationBuilder UsePassengerModules(this IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.UseMigration<PassengerDbContext>();
+        app.UseMigration<PassengerDbContext>(env);
         return app;
     }
 }

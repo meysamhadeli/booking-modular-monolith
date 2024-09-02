@@ -2,6 +2,6 @@ namespace BuildingBlocks.EFCore
 {
     public interface IDataSeeder
     {
-        Task SeedAllAsync<TContext>();
+        Task SeedAllAsync();
     }
 }

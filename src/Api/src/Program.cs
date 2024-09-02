@@ -1,4 +1,3 @@
-using System.Reflection;
 using Booking;
 using BuildingBlocks.CAP;
 using BuildingBlocks.Domain;
@@ -69,10 +68,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 
-app.UseFlightModules();
-app.UsePassengerModules();
-app.UseBookingModules();
-app.UseIdentityModules();
+app.UseFlightModules(env);
+app.UsePassengerModules(env);
+app.UseBookingModules(env);
+app.UseIdentityModules(env);
 
 app.UseProblemDetails();
 

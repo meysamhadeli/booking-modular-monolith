@@ -8,13 +8,13 @@
 
     <ItemGroup>
         <PackageReference Include="Ardalis.GuardClauses" Version="4.6.0" />
-        <PackageReference Include="AspNetCore.HealthChecks.UI.SQLite.Storage" Version="8.0.1" />
+        <PackageReference Include="AspNetCore.HealthChecks.UI.PostgreSQL.Storage" Version="8.0.1" />
         <PackageReference Include="Ben.BlockingDetector" Version="0.0.4" />
         <PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="8.2.0" />
+        <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="8.2.0" />
         <PackageReference Include="EasyCaching.Core" Version="1.9.2" />
         <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
         <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
-        <PackageReference Include="EntityFrameworkCore.Triggered" Version="3.2.2" />
         <PackageReference Include="Figgle" Version="0.5.1" />
         <PackageReference Include="FluentValidation" Version="11.9.2" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
@@ -25,6 +25,7 @@
         <PackageReference Include="MagicOnion.Server" Version="6.1.4" />
         <PackageReference Include="MagicOnion.Server" Version="6.1.4" />
         <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.4.0" />
+        <PackageReference Include="Npgsql" Version="8.0.3" />
         <PackageReference Include="NSubstitute" Version="5.1.0" />
         <PackageReference Include="Polly" Version="8.4.1" />
         <PackageReference Include="protobuf-net.BuildTools" Version="3.2.33">
@@ -41,9 +42,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
         <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.7" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
@@ -87,12 +86,10 @@
         <PackageReference Include="DotNetCore.CAP.MongoDB" Version="8.2.0" />
         <PackageReference Include="DotNetCore.CAP.OpenTelemetry" Version="8.2.0" />
         <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="8.2.0" />
-        <PackageReference Include="DotNetCore.CAP.SqlServer" Version="8.2.0" />
         <PackageReference Include="Duende.IdentityServer" Version="7.0.5" />
         <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.0.5" />
         <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="7.0.5" />
         <PackageReference Include="Duende.IdentityServer.EntityFramework.Storage" Version="7.0.5" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.7" />
         <PackageReference Include="Yarp.ReverseProxy" Version="2.1.0" />
         <PackageReference Include="Microsoft.Identity.Web" Version="3.0.1" />
@@ -123,7 +120,6 @@
     <ItemGroup>
         <Folder Include="Contracts" />
         <Folder Include="Domain\Model" />
-        <Folder Include="EventStoreDB\BackgroundWorkers" />
     </ItemGroup>
 
 </Project>

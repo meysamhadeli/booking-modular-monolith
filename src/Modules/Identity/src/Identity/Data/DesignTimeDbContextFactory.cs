@@ -9,7 +9,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<IdentityCo
     {
         var builder = new DbContextOptionsBuilder<IdentityContext>();
 
-        builder.UseSqlServer("Server=.\\sqlexpress;Database=IdentityDB;Trusted_Connection=True;MultipleActiveResultSets=true");
+        builder.UseNpgsql("Server=localhost;Port=5432;Database=identity_db;User Id=postgres;Password=postgres;Include Error Detail=true");
         return new IdentityContext(builder.Options, null);
     }
 }

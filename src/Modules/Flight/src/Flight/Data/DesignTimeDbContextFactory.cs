@@ -9,8 +9,7 @@ namespace Flight.Data
         {
             var builder = new DbContextOptionsBuilder<FlightDbContext>();
 
-            builder.UseSqlServer(
-                "Data Source=.\\sqlexpress;Initial Catalog=FlightDB;Persist Security Info=False;Integrated Security=SSPI");
+            builder.UseNpgsql("Server=localhost;Port=5432;Database=flight_db;User Id=postgres;Password=postgres;Include Error Detail=true");
             return new FlightDbContext(builder.Options, null);
         }
     }

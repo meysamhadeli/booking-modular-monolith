@@ -19,11 +19,8 @@ public class FlightDataSeeder : IDataSeeder
         _flightDbContext = flightDbContext;
     }
 
-    public async Task SeedAllAsync<TContext>()
+    public async Task SeedAllAsync()
     {
-        if (typeof(TContext) != typeof(FlightDbContext))
-            return;
-
         await SeedAirportAsync();
         await SeedAircraftAsync();
         await SeedFlightAsync();
