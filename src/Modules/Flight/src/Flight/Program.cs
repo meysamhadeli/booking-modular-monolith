@@ -61,7 +61,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 
-app.UseFlightModules();
+app.UseFlightModules(env);
 
 
 app.UseProblemDetails();

@@ -8,6 +8,7 @@ using BuildingBlocks.EventStoreDB;
 using BuildingBlocks.Exception;
 using BuildingBlocks.IdsGenerator;
 using BuildingBlocks.Mapster;
+using BuildingBlocks.Mongo;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -20,7 +21,7 @@ public static class BookingModule
 {
     public static IServiceCollection AddBookingModules(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddCustomDbContext<BookingDbContext>(nameof(Booking), configuration);
+        services.AddMongoDbContext<BookingReadDbContext>(configuration);
         services.AddTransient<IEventMapper, EventMapper>();
         SnowFlakIdGenerator.Configure(3);
 
@@ -42,14 +43,11 @@ public static class BookingModule
         
         services.AddCachingRequest(new List<Assembly> {typeof(BookingRoot).Assembly});
         
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(EfTxBookingBehavior<,>));
-        
         return services;
     }
 
-    public static IApplicationBuilder UseBookingModules(this IApplicationBuilder app)
+    public static IApplicationBuilder UseBookingModules(this IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.UseMigration<BookingDbContext>();
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapMagicOnionService();

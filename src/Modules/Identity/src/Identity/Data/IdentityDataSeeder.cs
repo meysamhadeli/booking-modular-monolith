@@ -21,11 +21,8 @@ public class IdentityDataSeeder : IDataSeeder
         _identityContext = identityContext;
     }
 
-    public async Task SeedAllAsync<TContext>()
+    public async Task SeedAllAsync()
     {
-        if (typeof(TContext) != typeof(IdentityContext))
-            return;
-
         await SeedRoles();
         await SeedUsers();
     }

@@ -10,6 +10,7 @@ using Flight.Data.Seed;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,9 +34,9 @@ public static class FlightModule
         return services;
     }
 
-    public static IApplicationBuilder UseFlightModules(this IApplicationBuilder app)
+    public static IApplicationBuilder UseFlightModules(this IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.UseMigration<FlightDbContext>();
+        app.UseMigration<FlightDbContext>(env);
         return app;
     }
 }
