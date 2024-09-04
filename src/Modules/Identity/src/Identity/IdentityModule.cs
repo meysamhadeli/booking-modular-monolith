@@ -35,10 +35,10 @@ public static class IdentityModule
         return services;
     }
 
-    public static IApplicationBuilder UseIdentityModules(this IApplicationBuilder app)
+    public static IApplicationBuilder UseIdentityModules(this IApplicationBuilder app, IWebHostEnvironment env)
     {
         app.UseIdentityServer();
-        app.UseMigration<IdentityContext>();
+        app.UseMigration<IdentityContext>(env);
         return app;
     }
 }

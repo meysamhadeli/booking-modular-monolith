@@ -6,9 +6,9 @@
     </div>   
 </div>
 
-> 🚀 **A practical and imaginary Modular Monolith for implementing an infrastructure for up and running Modular system with the latest technology and architecture like Vertical Slice Architecture, Event Sourcing, CQRS, DDD, gRpc, MongoDB and Cap in .Net 8.**
+> 🚀 **A practical and imaginary Modular Monolith for implementing an infrastructure for up and running Modular system with the latest technology and architecture like Vertical Slice Architecture, Event Driven Architecture, CQRS, DDD, gRpc and Cap in .Net 8.**
 
-> 💡 **This project is not business-oriented and most of my focus was in the thechnical part for implement a Modular system with a sample project. In this project I implemented some concept in Modular Monolith like Inmemory Broker, Tracing, Event Driven Architecture, Vertical Slice Architecture, Event Sourcing, CQRS, DDD and gRpc.**
+> 💡 **This project is not business-oriented and most of my focus was in the thechnical part for implement a Modular system with a sample project. In this project I implemented some concept in Modular Monolith like Inmemory Broker, Tracing, Event Driven Architecture, Vertical Slice Architecture, CQRS, DDD and gRpc.**
 
 <a href="https://gitpod.io/#https://github.com/meysamhadeli/booking-modular-monolith"><img alt="Open in Gitpod" src="https://gitpod.io/button/open-in-gitpod.svg"/></a>
 
@@ -40,8 +40,7 @@
 - :sparkle: Using `Inbox Pattern` on top of `Cap` for ensuring message idempotency for receiver and `Exactly once Delivery`. 
 - :sparkle: Using `Outbox Pattern` on top of `Cap` for ensuring no message is lost and there is at `Least One Delivery`.
 - :sparkle: Using `CQRS` implementation with `MediatR` library.
-- :sparkle: Using `SqlServer` for database in our modules.
-- :sparkle: Using `Event Store` for `write side` of Booking-Module to store all `historical state` of aggregate.
+- :sparkle: Using `Postgres` for database level in our modules.
 - :sparkle: Using `Unit Testing`, `Integration Testing` for testing level.
 - :sparkle: Using `Fluent Validation` and a `Validation Pipeline Behaviour` on top of `MediatR`.
 - :sparkle: Using `Docker-Compose` and `Kubernetes` for our deployment mechanism.
@@ -84,7 +83,6 @@ High-level plan is represented in the table
 - ✔️ **[`Hellang.Middleware.ProblemDetails`](https://github.com/khellang/Middleware/tree/master/src/ProblemDetails)** - A middleware for handling exception in .Net Core
 - ✔️ **[`IdGen`](https://github.com/RobThree/IdGen)** - Twitter Snowflake-alike ID generator for .Net
 - ✔️ **[`MagicOnion`](https://github.com/Cysharp/MagicOnion)** - gRPC based HTTP/2 RPC Streaming Framework for .NET, .NET Core and Unity.
-- ✔️ **[`EventStore`](https://github.com/EventStore/EventStore)** - The open-source, functional database with Complex Event Processing.
 
 ## The Domain And Bounded Context - Service Boundary
 
@@ -100,7 +98,7 @@ High-level plan is represented in the table
 
 > Note: We don't have separated API project for each module because they are not microervice and shouldn't host separately, so for hosting all modules, we just use one Api project.
 
-![](./assets/modular-monolith-diagram.jpg)
+![](./assets/modular-monolith-diagram.png)
 
 ## Structure of Project
 

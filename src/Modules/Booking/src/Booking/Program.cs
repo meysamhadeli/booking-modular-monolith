@@ -61,7 +61,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 
-app.UseBookingModules();
+app.UseBookingModules(env);
 app.UseProblemDetails();
 
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

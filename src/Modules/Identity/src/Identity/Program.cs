@@ -61,7 +61,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 
-app.UseIdentityModules();
+app.UseIdentityModules(env);
 
 app.UseProblemDetails();
 

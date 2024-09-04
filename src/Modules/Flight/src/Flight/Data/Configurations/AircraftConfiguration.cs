@@ -8,7 +8,7 @@ public class AircraftConfiguration : IEntityTypeConfiguration<Aircraft>
 {
     public void Configure(EntityTypeBuilder<Aircraft> builder)
     {
-        builder.ToTable("Aircraft", "dbo");
+        builder.ToTable(nameof(Aircraft));
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id).ValueGeneratedNever();
     }

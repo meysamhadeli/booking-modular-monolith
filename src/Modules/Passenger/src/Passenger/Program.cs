@@ -60,7 +60,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 
-app.UsePassengerModules();
+app.UsePassengerModules(env);
 
 app.UseProblemDetails();
 

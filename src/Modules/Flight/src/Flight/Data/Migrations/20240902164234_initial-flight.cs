@@ -5,28 +5,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Flight.Data.Migrations
 {
-    public partial class Init : Migration
+    /// <inheritdoc />
+    public partial class initialflight : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "dbo");
-
             migrationBuilder.CreateTable(
                 name: "Aircraft",
-                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Model = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ManufacturingYear = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Model = table.Column<string>(type: "text", nullable: true),
+                    ManufacturingYear = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastModifiedBy = table.Column<long>(type: "bigint", nullable: true),
-                    Version = table.Column<long>(type: "bigint", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -35,19 +33,18 @@ namespace Flight.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Airport",
-                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Address = table.Column<string>(type: "text", nullable: true),
+                    Code = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastModifiedBy = table.Column<long>(type: "bigint", nullable: true),
-                    Version = table.Column<long>(type: "bigint", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,26 +53,25 @@ namespace Flight.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Flight",
-                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
-                    FlightNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FlightNumber = table.Column<string>(type: "text", nullable: true),
                     AircraftId = table.Column<long>(type: "bigint", nullable: false),
-                    DepartureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DepartureDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DepartureAirportId = table.Column<long>(type: "bigint", nullable: false),
-                    ArriveDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ArriveDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     ArriveAirportId = table.Column<long>(type: "bigint", nullable: false),
-                    DurationMinutes = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    FlightDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DurationMinutes = table.Column<decimal>(type: "numeric", nullable: false),
+                    FlightDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastModifiedBy = table.Column<long>(type: "bigint", nullable: true),
-                    Version = table.Column<long>(type: "bigint", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,14 +79,12 @@ namespace Flight.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Flight_Aircraft_AircraftId",
                         column: x => x.AircraftId,
-                        principalSchema: "dbo",
                         principalTable: "Aircraft",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Flight_Airport_ArriveAirportId",
                         column: x => x.ArriveAirportId,
-                        principalSchema: "dbo",
                         principalTable: "Airport",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -98,20 +92,19 @@ namespace Flight.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Seat",
-                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
-                    SeatNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Class = table.Column<int>(type: "int", nullable: false),
+                    SeatNumber = table.Column<string>(type: "text", nullable: true),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Class = table.Column<int>(type: "integer", nullable: false),
                     FlightId = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastModifiedBy = table.Column<long>(type: "bigint", nullable: true),
-                    Version = table.Column<long>(type: "bigint", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -119,7 +112,6 @@ namespace Flight.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Seat_Flight_FlightId",
                         column: x => x.FlightId,
-                        principalSchema: "dbo",
                         principalTable: "Flight",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -127,40 +119,34 @@ namespace Flight.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Flight_AircraftId",
-                schema: "dbo",
                 table: "Flight",
                 column: "AircraftId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Flight_ArriveAirportId",
-                schema: "dbo",
                 table: "Flight",
                 column: "ArriveAirportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Seat_FlightId",
-                schema: "dbo",
                 table: "Seat",
                 column: "FlightId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Seat",
-                schema: "dbo");
+                name: "Seat");
 
             migrationBuilder.DropTable(
-                name: "Flight",
-                schema: "dbo");
+                name: "Flight");
 
             migrationBuilder.DropTable(
-                name: "Aircraft",
-                schema: "dbo");
+                name: "Aircraft");
 
             migrationBuilder.DropTable(
-                name: "Airport",
-                schema: "dbo");
+                name: "Airport");
         }
     }
 }

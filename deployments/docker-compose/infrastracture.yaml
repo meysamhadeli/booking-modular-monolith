@@ -1,20 +1,26 @@
 version: "3.3"
 services:
 
-    #######################################################
-    #  SqlServer
-    #######################################################
-  db:
-    container_name: sqldb
-    image: mcr.microsoft.com/mssql/server
-    restart: unless-stopped
-    ports:
-      - "1433:1433"
-    environment:
-      SA_PASSWORD: "@Aa123456"
-      ACCEPT_EULA: "Y"
-    networks:
-      - booking
+   #######################################################
+   #  Postgres
+   ######################################################
+  postgres:
+   image: postgres:latest
+   container_name: postgres
+   restart: unless-stopped
+   ports:
+     - '5432:5432'
+   environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+   command:
+     - "postgres"
+     - "-c"
+     - "wal_level=logical"
+     - "-c"
+     - "max_prepared_transactions=10"
+   networks:
+     - booking
 
 
     #######################################################

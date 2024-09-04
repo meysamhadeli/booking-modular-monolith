@@ -1,2 +1,2 @@
-dotnet ef migrations add initial --context PassengerDbContext -o "Data\Migrations"
-dotnet ef database update --context PassengerDbContext
+dotnet ef migrations add initial -o "Data\Migrations"
+dotnet ef database update
