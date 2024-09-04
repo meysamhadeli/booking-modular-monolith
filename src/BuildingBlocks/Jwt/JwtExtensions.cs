@@ -1,6 +1,7 @@
 using BuildingBlocks.Utils;
 using BuildingBlocks.Web;
 using Duende.IdentityServer.Models;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,7 +13,12 @@ public static class JwtExtensions
     {
         var jwtOptions = services.GetOptions<JwtBearerOptions>("Jwt");
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        services.AddAuthentication(options =>
+        {
+            options.DefaultScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+        })
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
                 options.Authority = jwtOptions.Authority;
