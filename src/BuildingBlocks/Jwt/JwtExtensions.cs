@@ -19,11 +19,11 @@ public static class JwtExtensions
             options.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
         })
-            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-            {
-                options.Authority = jwtOptions.Authority;
-                options.TokenValidationParameters.ValidateAudience = false;
-            });
+        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+        {
+            options.Authority = jwtOptions.Authority;
+            options.TokenValidationParameters.ValidateAudience = false;
+        });
 
         if (!string.IsNullOrEmpty(jwtOptions.Audience))
         {
