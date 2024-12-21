@@ -3,10 +3,12 @@ using BuildingBlocks.Domain.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace BuildingBlocks.EFCore;
 
@@ -23,8 +25,6 @@ public static class Extensions
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-        var b = configuration.GetConnectionString(connectionName);
-        
         services.AddDbContext<TContext>((sp, options) =>
         {
             options.UseNpgsql(configuration.GetConnectionString(connectionName),
@@ -32,22 +32,23 @@ public static class Extensions
                 {
                     dbOptions.MigrationsAssembly(typeof(TContext).Assembly.GetName().Name);
                 });
+
+            // Suppress warnings for pending model changes
+            options.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
         });
 
+        services.AddScoped<ISeedManager, SeedManager>();
         services.AddScoped<IDbContext>(provider => provider.GetService<TContext>());
 
         return services;
     }
 
-    public static IApplicationBuilder UseMigration<TContext>(this IApplicationBuilder app, IWebHostEnvironment env)
+    public static IApplicationBuilder UseMigration<TContext>(this IApplicationBuilder app)
         where TContext : DbContext, IDbContext
     {
         MigrateDatabaseAsync<TContext>(app.ApplicationServices).GetAwaiter().GetResult();
 
-        if (!env.IsEnvironment("test"))
-        {
-            SeedDataAsync(app.ApplicationServices).GetAwaiter().GetResult();
-        }
+        SeedDataAsync(app.ApplicationServices).GetAwaiter().GetResult();
 
         return app;
     }
@@ -104,17 +105,18 @@ public static class Extensions
     private static async Task MigrateDatabaseAsync<TContext>(IServiceProvider serviceProvider)
         where TContext : DbContext, IDbContext
     {
-        using var scope = serviceProvider.CreateScope();
-
+        await using var scope = serviceProvider.CreateAsyncScope();
         var context = scope.ServiceProvider.GetRequiredService<TContext>();
-        try
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<TContext>>();
+
+        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+
+        if (pendingMigrations.Any())
         {
+            logger.LogInformation("Applying {Count} pending migrations...", pendingMigrations.Count());
+
             await context.Database.MigrateAsync();
-        }
-        catch (System.Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
+            logger.LogInformation("Migrations applied successfully.");
         }
     }
 

@@ -28,15 +28,15 @@ public static class FlightModule
         services.AddValidatorsFromAssembly(typeof(FlightRoot).Assembly);
         services.AddCustomMapster(typeof(FlightRoot).Assembly);
         services.AddCachingRequest(new List<Assembly> {typeof(FlightRoot).Assembly});
-        
+
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(EfTxFlightBehavior<,>));
 
         return services;
     }
 
-    public static IApplicationBuilder UseFlightModules(this IApplicationBuilder app, IWebHostEnvironment env)
+    public static IApplicationBuilder UseFlightModules(this IApplicationBuilder app)
     {
-        app.UseMigration<FlightDbContext>(env);
+        app.UseMigration<FlightDbContext>();
         return app;
     }
 }

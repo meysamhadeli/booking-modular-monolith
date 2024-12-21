@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Api</RootNamespace>
   </PropertyGroup>
 
@@ -12,5 +10,5 @@
     <ProjectReference Include="..\..\Modules\Identity\src\Identity\Identity.csproj" />
     <ProjectReference Include="..\..\Modules\Passenger\src\Passenger\Passenger.csproj" />
   </ItemGroup>
-  
+
 </Project>

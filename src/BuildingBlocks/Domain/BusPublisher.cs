@@ -14,7 +14,6 @@ public sealed class BusPublisher : IBusPublisher
     private readonly IEventMapper _eventMapper;
     private readonly ILogger<BusPublisher> _logger;
     private readonly ICapPublisher _capPublisher;
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
     public BusPublisher(IServiceScopeFactory serviceScopeFactory,
@@ -27,7 +26,6 @@ public sealed class BusPublisher : IBusPublisher
         _eventMapper = eventMapper;
         _logger = logger;
         _capPublisher = capPublisher;
-        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task SendAsync(IDomainEvent domainEvent,

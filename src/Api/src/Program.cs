@@ -5,13 +5,12 @@ using BuildingBlocks.Exception;
 using BuildingBlocks.Jwt;
 using BuildingBlocks.Logging;
 using BuildingBlocks.MediatR;
-using BuildingBlocks.Swagger;
+using BuildingBlocks.OpenApi;
 using BuildingBlocks.Web;
 using Figgle;
 using Flight;
 using Hellang.Middleware.ProblemDetails;
 using Identity;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Passenger;
 using Serilog;
 
@@ -31,11 +30,7 @@ builder.Services.AddCustomCap();
 builder.Services.AddTransient<IBusPublisher, BusPublisher>();
 builder.Services.AddCustomVersioning();
 
-builder.Services.AddCustomSwagger(configuration,
-    typeof(FlightRoot).Assembly,
-    typeof(IdentityRoot).Assembly,
-    typeof(PassengerModule).Assembly,
-    typeof(BookingRoot).Assembly);
+builder.Services.AddAspnetOpenApi();
 
 builder.Services.AddCustomProblemDetails();
 
@@ -57,8 +52,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    var provider = app.Services.GetService<IApiVersionDescriptionProvider>();
-    app.UseCustomSwagger(provider);
+    app.UseAspnetOpenApi();
 }
 
 app.UseSerilogRequestLogging();
@@ -68,10 +62,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 
-app.UseFlightModules(env);
-app.UsePassengerModules(env);
-app.UseBookingModules(env);
-app.UseIdentityModules(env);
+app.UseFlightModules();
+app.UsePassengerModules();
+app.UseBookingModules();
+app.UseIdentityModules();
 
 app.UseProblemDetails();
 

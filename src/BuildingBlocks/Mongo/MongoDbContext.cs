@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace BuildingBlocks.Mongo;
@@ -14,6 +16,11 @@ public class MongoDbContext : IMongoDbContext
     public IMongoClient MongoClient { get; }
     protected readonly IList<Func<Task>> _commands;
 
+    static MongoDbContext()
+    {
+        BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
+    }
+    
     public MongoDbContext(IOptions<MongoOptions> options)
     {
         RegisterConventions();

@@ -33,20 +33,20 @@ public static class BookingModule
             .AddEventStoreDBSubscriptionToAll();
 
         services.Configure<GrpcOptions>(options => configuration.GetSection("Grpc").Bind(options));
-        
+
         services.AddGrpc(options =>
         {
             options.Interceptors.Add<GrpcExceptionInterceptor>();
         });
 
         services.AddMagicOnion();
-        
+
         services.AddCachingRequest(new List<Assembly> {typeof(BookingRoot).Assembly});
-        
+
         return services;
     }
 
-    public static IApplicationBuilder UseBookingModules(this IApplicationBuilder app, IWebHostEnvironment env)
+    public static IApplicationBuilder UseBookingModules(this IApplicationBuilder app)
     {
         app.UseEndpoints(endpoints =>
         {

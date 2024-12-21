@@ -22,7 +22,7 @@ public static class IdentityModule
     {
         services.AddCustomDbContext<IdentityContext>(nameof(Identity), configuration);
         services.AddScoped<IDataSeeder, IdentityDataSeeder>();
-        
+
         services.AddTransient<IEventMapper, EventMapper>();
         services.AddIdentityServer(env);
 
@@ -35,10 +35,10 @@ public static class IdentityModule
         return services;
     }
 
-    public static IApplicationBuilder UseIdentityModules(this IApplicationBuilder app, IWebHostEnvironment env)
+    public static IApplicationBuilder UseIdentityModules(this IApplicationBuilder app)
     {
         app.UseIdentityServer();
-        app.UseMigration<IdentityContext>(env);
+        app.UseMigration<IdentityContext>();
         return app;
     }
 }

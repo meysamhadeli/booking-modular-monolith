@@ -24,15 +24,15 @@ public static class PassengerModule
         services.AddValidatorsFromAssembly(typeof(PassengerRoot).Assembly);
         services.AddCustomMapster(typeof(PassengerRoot).Assembly);
         services.AddCachingRequest(new List<Assembly> {typeof(PassengerRoot).Assembly});
-        
+
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(EfTxPassengerBehavior<,>));
 
         return services;
     }
 
-    public static IApplicationBuilder UsePassengerModules(this IApplicationBuilder app, IWebHostEnvironment env)
+    public static IApplicationBuilder UsePassengerModules(this IApplicationBuilder app)
     {
-        app.UseMigration<PassengerDbContext>(env);
+        app.UseMigration<PassengerDbContext>();
         return app;
     }
 }
