@@ -3,10 +3,10 @@
     <div align="center">
            <a href="https://github.com/meysamhadeli/booking-modular-monolith/actions/workflows/dotnet.yml"><img alt="build-status" src="https://github.com/meysamhadeli/booking-modular-monolith/actions/workflows/dotnet.yml/badge.svg?branch=main&style=flat-square"/></a>
                  <a href="https://github.com/meysamhadeli/booking-modular-monolith/blob/main/LICENSE"><img alt="build-status"          src="https://img.shields.io/github/license/meysamhadeli/booking-modular-monolith?color=%234275f5&style=flat-square"/></a>
-    </div>   
+    </div>
 </div>
 
-> 🚀 **A practical and imaginary Modular Monolith for implementing an infrastructure for up and running Modular system with the latest technology and architecture like Vertical Slice Architecture, Event Driven Architecture, CQRS, DDD, gRpc and Cap in .Net 8.**
+> 🚀 **A practical and imaginary Modular Monolith for implementing an infrastructure for up and running Modular system with the latest technology and architecture like Vertical Slice Architecture, Event Driven Architecture, CQRS, DDD, gRpc and Cap in .Net 9.**
 
 > 💡 **This project is not business-oriented and most of my focus was in the thechnical part for implement a Modular system with a sample project. In this project I implemented some concept in Modular Monolith like Inmemory Broker, Tracing, Event Driven Architecture, Vertical Slice Architecture, CQRS, DDD and gRpc.**
 
@@ -28,7 +28,7 @@
   - [Build](#build)
   - [Run](#run)
   - [Test](#test)
-- [Documentation Apis](#documentation-apis)   
+- [Documentation Apis](#documentation-apis)
 - [Support](#support)
 - [Contribution](#contribution)
 
@@ -37,10 +37,11 @@
 - :sparkle: Using `Vertical Slice Architecture` for architecture level.
 - :sparkle: Using `Domain Driven Design (DDD)` to implement all business processes in modules.
 - :sparkle: Using `InMememoryBroker` on top of `Cap` for `Event Driven Architecture` between our modules.
-- :sparkle: Using `Inbox Pattern` on top of `Cap` for ensuring message idempotency for receiver and `Exactly once Delivery`. 
+- :sparkle: Using `Inbox Pattern` on top of `Cap` for ensuring message idempotency for receiver and `Exactly once Delivery`.
 - :sparkle: Using `Outbox Pattern` on top of `Cap` for ensuring no message is lost and there is at `Least One Delivery`.
 - :sparkle: Using `CQRS` implementation with `MediatR` library.
 - :sparkle: Using `Postgres` for database level in our modules.
+- :sparkle: Using `AspNetCore OpenApi` for `generating` built-in support `OpenAPI documentation` in ASP.NET Core.
 - :sparkle: Using `Unit Testing`, `Integration Testing` for testing level.
 - :sparkle: Using `Fluent Validation` and a `Validation Pipeline Behaviour` on top of `MediatR`.
 - :sparkle: Using `Docker-Compose` and `Kubernetes` for our deployment mechanism.
@@ -66,22 +67,24 @@ High-level plan is represented in the table
 
 ## Technologies - Libraries
 
-- ✔️ **[`.NET 6`](https://dotnet.microsoft.com/download)** - .NET Framework and .NET Core, including ASP.NET and ASP.NET Core
-- ✔️ **[`MVC Versioning API`](https://github.com/microsoft/aspnet-api-versioning)** - Set of libraries which add service API versioning to ASP.NET Web API, OData with ASP.NET Web API, and ASP.NET Core
-- ✔️ **[`EF Core`](https://github.com/dotnet/efcore)** - Modern object-database mapper for .NET. It supports LINQ queries, change tracking, updates, and schema migrations
+- ✔️ **[`.NET 9`](https://github.com/dotnet/aspnetcore)** - .NET Framework and .NET Core, including ASP.NET and ASP.NET Core.
+- ✔️ **[`MVC Versioning API`](https://github.com/microsoft/aspnet-api-versioning)** - Set of libraries which add service API versioning to ASP.NET Web API, OData with ASP.NET Web API, and ASP.NET Core.
+- ✔️ **[`EF Core`](https://github.com/dotnet/efcore)** - Modern object-database mapper for .NET. It supports LINQ queries, change tracking, updates, and schema migrations.
+- ✔️ **[`AspNetCore OpenApi`](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/aspnetcore-openapi?view=aspnetcore-9.0&tabs=visual-studio#configure-openapi-document-generation)** - Provides built-in support for OpenAPI document generation in ASP.NET Core.
 - ✔️ **[`Cap`](https://github.com/dotnetcore/CAP)** - An EventBus with local persistent message functionality for system integration in SOA or Microservice architecture.
 - ✔️ **[`MediatR`](https://github.com/jbogard/MediatR)** - Simple, unambitious mediator implementation in .NET.
-- ✔️ **[`FluentValidation`](https://github.com/FluentValidation/FluentValidation)** - Popular .NET validation library for building strongly-typed validation rules
-- ✔️ **[`Swagger & Swagger UI`](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)** - Swagger tools for documenting API's built on ASP.NET Core
-- ✔️ **[`Serilog`](https://github.com/serilog/serilog)** - Simple .NET logging with fully-structured events
-- ✔️ **[`Polly`](https://github.com/App-vNext/Polly)** - Polly is a .NET resilience and transient-fault-handling library that allows developers to express policies such as Retry, Circuit Breaker, Timeout, Bulkhead Isolation, and Fallback in a fluent and thread-safe manner
-- ✔️ **[`Scrutor`](https://github.com/khellang/Scrutor)** - Assembly scanning and decoration extensions for Microsoft.Extensions.DependencyInjection
-- ✔️ **[`Opentelemetry-dotnet`](https://github.com/open-telemetry/opentelemetry-dotnet)** - The OpenTelemetry .NET Client
-- ✔️ **[`DuendeSoftware IdentityServer`](https://github.com/DuendeSoftware/IdentityServer)** - The most flexible and standards-compliant OpenID Connect and OAuth 2.x framework for ASP.NET Core
+- ✔️ **[`FluentValidation`](https://github.com/FluentValidation/FluentValidation)** - Popular .NET validation library for building strongly-typed validation rules.
+- ✔️ **[`Scalar`](https://github.com/scalar/scalar/tree/main/packages/scalar.aspnetcore)** - Scalar provides an easy way to render beautiful API references based on OpenAPI/Swagger documents.
+- ✔️ **[`Swagger UI`](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)** - Swagger tools for documenting API's built on ASP.NET Core.
+- ✔️ **[`Serilog`](https://github.com/serilog/serilog)** - Simple .NET logging with fully-structured events.
+- ✔️ **[`Polly`](https://github.com/App-vNext/Polly)** - Polly is a .NET resilience and transient-fault-handling library that allows developers to express policies such as Retry, Circuit Breaker, Timeout, Bulkhead Isolation, and Fallback in a fluent and thread-safe manner.
+- ✔️ **[`Scrutor`](https://github.com/khellang/Scrutor)** - Assembly scanning and decoration extensions for Microsoft.Extensions.DependencyInjection.
+- ✔️ **[`Opentelemetry-dotnet`](https://github.com/open-telemetry/opentelemetry-dotnet)** - The OpenTelemetry .NET Client.
+- ✔️ **[`DuendeSoftware IdentityServer`](https://github.com/DuendeSoftware/IdentityServer)** - The most flexible and standards-compliant OpenID Connect and OAuth 2.x framework for ASP.NET Core.
 - ✔️ **[`EasyCaching`](https://github.com/dotnetcore/EasyCaching)** - Open source caching library that contains basic usages and some advanced usages of caching which can help us to handle caching more easier.
 - ✔️ **[`Mapster`](https://github.com/MapsterMapper/Mapster)** - Convention-based object-object mapper in .NET.
-- ✔️ **[`Hellang.Middleware.ProblemDetails`](https://github.com/khellang/Middleware/tree/master/src/ProblemDetails)** - A middleware for handling exception in .Net Core
-- ✔️ **[`IdGen`](https://github.com/RobThree/IdGen)** - Twitter Snowflake-alike ID generator for .Net
+- ✔️ **[`Hellang.Middleware.ProblemDetails`](https://github.com/khellang/Middleware/tree/master/src/ProblemDetails)** - A middleware for handling exception in .Net Core.
+- ✔️ **[`IdGen`](https://github.com/RobThree/IdGen)** - Twitter Snowflake-alike ID generator for .Net.
 - ✔️ **[`MagicOnion`](https://github.com/Cysharp/MagicOnion)** - gRPC based HTTP/2 RPC Streaming Framework for .NET, .NET Core and Unity.
 
 ## The Domain And Bounded Context - Service Boundary

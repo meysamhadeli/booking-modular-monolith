@@ -6,11 +6,8 @@ namespace BuildingBlocks.Exception;
 
 public class GrpcExceptionInterceptor : Interceptor
 {
-    private readonly ILogger<GrpcExceptionInterceptor> _logger;
-
     public GrpcExceptionInterceptor(ILogger<GrpcExceptionInterceptor> logger)
     {
-        _logger = logger;
     }
 
     public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(

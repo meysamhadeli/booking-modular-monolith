@@ -4,18 +4,12 @@ using BuildingBlocks.Exception;
 using BuildingBlocks.Jwt;
 using BuildingBlocks.Logging;
 using BuildingBlocks.MediatR;
-using BuildingBlocks.Swagger;
 using BuildingBlocks.Web;
 using Figgle;
 using Hellang.Middleware.ProblemDetails;
 using Identity;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
+using BuildingBlocks.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -33,8 +27,7 @@ builder.Services.AddCustomCap();
 builder.Services.AddTransient<IBusPublisher, BusPublisher>();
 builder.Services.AddCustomVersioning();
 
-builder.Services.AddCustomSwagger(configuration,
-    typeof(IdentityRoot).Assembly);
+builder.Services.AddAspnetOpenApi();
 
 builder.Services.AddCustomProblemDetails();
 
@@ -50,8 +43,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    var provider = app.Services.GetService<IApiVersionDescriptionProvider>();
-    app.UseCustomSwagger(provider);
+    app.UseAspnetOpenApi();
 }
 
 app.UseSerilogRequestLogging();
@@ -61,7 +53,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 
-app.UseIdentityModules(env);
+app.UseIdentityModules();
 
 app.UseProblemDetails();
 
