@@ -169,7 +169,7 @@ Content-Type: application/json
 authorization: bearer {{Authenticate.response.body.access_token}}
 
 {
-  "passportNumber": "1234567896",
+  "passportNumber": "12345678",
   "passengerType": 1,
   "age": 30
 }

@@ -62,7 +62,8 @@ public class IdentityDataSeeder : IDataSeeder
                                LastName = "Hadeli",
                                UserName = "meysamh",
                                Email = "meysam@test.com",
-                               SecurityStamp = Guid.NewGuid().ToString()
+                               SecurityStamp = Guid.NewGuid().ToString(),
+                               PassPortNumber = String.Empty
                            };
 
                 var result = await _userManager.CreateAsync(user, "Admin@123456");
@@ -80,7 +81,8 @@ public class IdentityDataSeeder : IDataSeeder
                                LastName = "Hadeli",
                                UserName = "meysamh2",
                                Email = "meysam2@test.com",
-                               SecurityStamp = Guid.NewGuid().ToString()
+                               SecurityStamp = Guid.NewGuid().ToString(),
+                               PassPortNumber = String.Empty
                            };
 
                 var result = await _userManager.CreateAsync(user, "User@123456");
