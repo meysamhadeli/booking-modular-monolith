@@ -1,3 +1,4 @@
+using BookingMonolith.Identity.Configurations;
 using Identity.Data;
 using Identity.Identity.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +10,10 @@ namespace Identity.Extensions;
 
 public static class IdentityServerExtensions
 {
-    public static IServiceCollection AddIdentityServer(this IServiceCollection services, IWebHostEnvironment env)
+    public static IServiceCollection AddIdentityServer(
+        this IServiceCollection services,
+        IWebHostEnvironment env
+    )
     {
         services.AddIdentity<ApplicationUser, IdentityRole<long>>(config =>
             {
@@ -22,13 +26,20 @@ public static class IdentityServerExtensions
             .AddDefaultTokenProviders();
 
         var identityServerBuilder = services.AddIdentityServer(options =>
-            {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
-                
-            })
+                                                               {
+                                                                   options.Events.RaiseErrorEvents =
+                                                                       true;
+
+                                                                   options.Events
+                                                                           .RaiseInformationEvents =
+                                                                       true;
+
+                                                                   options.Events
+                                                                       .RaiseFailureEvents = true;
+
+                                                                   options.Events
+                                                                       .RaiseSuccessEvents = true;
+                                                               })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiResources(Config.ApiResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
@@ -40,6 +51,25 @@ public static class IdentityServerExtensions
         {
             identityServerBuilder.AddDeveloperSigningCredential();
         }
+
+        services.ConfigureApplicationCookie(options =>
+                                            {
+                                                options.Events.OnRedirectToLogin = context =>
+                                                {
+                                                    context.Response.StatusCode =
+                                                        StatusCodes.Status401Unauthorized;
+
+                                                    return Task.CompletedTask;
+                                                };
+
+                                                options.Events.OnRedirectToAccessDenied = context =>
+                                                {
+                                                    context.Response.StatusCode =
+                                                        StatusCodes.Status403Forbidden;
+
+                                                    return Task.CompletedTask;
+                                                };
+                                            });
 
         return services;
     }
