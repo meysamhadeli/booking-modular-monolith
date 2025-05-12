@@ -1,9 +1,9 @@
-using System.Collections.Generic;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using Identity.Identity.Constants;
+using IdentityModel;
 
-namespace Identity;
+namespace BookingMonolith.Identity.Configurations;
 
 public static class Config
 {
@@ -12,17 +12,15 @@ public static class Config
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
-            new IdentityResources.Email(),
-            new IdentityResources.Phone(),
-            new IdentityResources.Address(),
-            new(Constants.StandardScopes.Roles, new List<string> {"role"})
+            new IdentityResources.Email()
         };
 
 
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new(Constants.StandardScopes.Booking)
+            new(Constants.StandardScopes.Booking),
+            new(JwtClaimTypes.Role, new List<string> {"role"})
         };
 
 
@@ -30,6 +28,9 @@ public static class Config
         new List<ApiResource>
         {
             new(Constants.StandardScopes.Booking)
+            {
+                Scopes = { Constants.StandardScopes.Booking }
+            },
         };
 
     public static IEnumerable<Client> Clients =>
@@ -38,20 +39,21 @@ public static class Config
             new()
             {
                 ClientId = "client",
-
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-
                 ClientSecrets =
                 {
                     new Secret("secret".Sha256())
                 },
-
                 AllowedScopes =
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    Constants.StandardScopes.Booking
-                }
+                    JwtClaimTypes.Role, // Include roles scope
+                    Constants.StandardScopes.Booking,
+                },
+                AccessTokenLifetime = 3600,  // authorize the client to access protected resources
+                IdentityTokenLifetime = 3600, // authenticate the user,
+                AlwaysIncludeUserClaimsInIdToken = true // Include claims in ID token
             }
         };
 }
