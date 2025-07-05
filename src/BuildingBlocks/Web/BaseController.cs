@@ -1,10 +1,11 @@
-﻿using MediatR;
+using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Mapster;
-using MapsterMapper;
 
 namespace BuildingBlocks.Web;
+
+using MapsterMapper;
 
 [Route(BaseApiPath)]
 [ApiController]

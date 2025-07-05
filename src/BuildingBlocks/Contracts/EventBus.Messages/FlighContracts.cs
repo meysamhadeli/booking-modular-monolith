@@ -1,8 +1,11 @@
-using BuildingBlocks.Domain.Event;
+using BuildingBlocks.Core.Event;
 
 namespace BuildingBlocks.Contracts.EventBus.Messages;
 
-public record FlightCreated(string FlightNumber) : IIntegrationEvent;
-public record FlightUpdated(string FlightNumber) : IIntegrationEvent;
-public record AircraftCreated(long Id) : IIntegrationEvent;
-public record AirportCreated(long Id) : IIntegrationEvent;
+public record FlightCreated(Guid Id) : IIntegrationEvent;
+public record FlightUpdated(Guid Id) : IIntegrationEvent;
+public record FlightDeleted(Guid Id) : IIntegrationEvent;
+public record AircraftCreated(Guid Id) : IIntegrationEvent;
+public record AirportCreated(Guid Id) : IIntegrationEvent;
+public record SeatCreated(Guid Id) : IIntegrationEvent;
+public record SeatReserved(Guid Id) : IIntegrationEvent;

@@ -1,8 +1,10 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BuildingBlocks.EventStoreDB;
+
+using Web;
 
 public static class Extensions
 {
@@ -13,6 +15,8 @@ public static class Extensions
         params Assembly[] assemblies
     )
     {
+        services.AddValidateOptions<EventStoreOptions>();
+
         var assembliesToScan = assemblies.Length > 0 ? assemblies : new[] { Assembly.GetEntryAssembly()! };
 
         return services

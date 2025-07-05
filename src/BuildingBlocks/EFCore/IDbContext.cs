@@ -1,4 +1,4 @@
-using BuildingBlocks.Domain.Event;
+using BuildingBlocks.Core.Event;
 using Microsoft.EntityFrameworkCore;
 
 namespace BuildingBlocks.EFCore;

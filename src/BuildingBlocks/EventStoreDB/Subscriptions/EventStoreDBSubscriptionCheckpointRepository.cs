@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Domain.Event;
+using BuildingBlocks.Core.Event;
+using BuildingBlocks.EventStoreDB.Events;
 using BuildingBlocks.EventStoreDB.Serialization;
 using EventStore.Client;
 
@@ -23,7 +24,10 @@ public class EventStoreDBSubscriptionCheckpointRepository : ISubscriptionCheckpo
         var result = eventStoreClient.ReadStreamAsync(Direction.Backwards, streamName, StreamPosition.End, 1,
             cancellationToken: ct);
 
-        if (await result.ReadState == ReadState.StreamNotFound) return null;
+        if (await result.ReadState == ReadState.StreamNotFound)
+        {
+            return null;
+        }
 
         ResolvedEvent? @event = await result.FirstOrDefaultAsync(ct);
 
@@ -33,7 +37,7 @@ public class EventStoreDBSubscriptionCheckpointRepository : ISubscriptionCheckpo
     public async ValueTask Store(string subscriptionId, ulong position, CancellationToken ct)
     {
         var @event = new CheckpointStored(subscriptionId, position, DateTime.UtcNow);
-        var eventToAppend = new[] {@event.ToJsonEventData()};
+        var eventToAppend = new[] { @event.ToJsonEventData() };
         var streamName = GetCheckpointStreamName(subscriptionId);
 
         try
@@ -68,8 +72,5 @@ public class EventStoreDBSubscriptionCheckpointRepository : ISubscriptionCheckpo
         }
     }
 
-    private static string GetCheckpointStreamName(string subscriptionId)
-    {
-        return $"checkpoint_{subscriptionId}";
-    }
+    private static string GetCheckpointStreamName(string subscriptionId) => $"checkpoint_{subscriptionId}";
 }
