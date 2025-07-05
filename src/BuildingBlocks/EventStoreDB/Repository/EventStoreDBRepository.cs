@@ -1,19 +1,23 @@
-﻿using BuildingBlocks.EventStoreDB.Events;
+using BuildingBlocks.EventStoreDB.Events;
 using BuildingBlocks.EventStoreDB.Serialization;
 using EventStore.Client;
 
 namespace BuildingBlocks.EventStoreDB.Repository;
 
-public interface IEventStoreDBRepository<T> where T : class, IAggregateEventSourcing<long>
+public interface IEventStoreDBRepository<T> where T : class, IAggregateEventSourcing<Guid>
 {
-    Task<T?> Find(long id, CancellationToken cancellationToken);
+    Task<T?> Find(Guid id, CancellationToken cancellationToken);
     Task<ulong> Add(T aggregate, CancellationToken cancellationToken);
-    Task<ulong> Update(T aggregate, long? expectedRevision = null, CancellationToken cancellationToken = default);
+
+    Task<ulong> Update(T aggregate, long? expectedRevision = null,
+        CancellationToken cancellationToken = default);
+
     Task<ulong> Delete(T aggregate, long? expectedRevision = null, CancellationToken cancellationToken = default);
 }
 
-public class EventStoreDBRepository<T>: IEventStoreDBRepository<T> where T : class, IAggregateEventSourcing<long>
+public class EventStoreDBRepository<T> : IEventStoreDBRepository<T> where T : class, IAggregateEventSourcing<Guid>
 {
+    private static readonly long _currentUserId;
     private readonly EventStoreClient eventStore;
 
     public EventStoreDBRepository(EventStoreClient eventStore)
@@ -21,11 +25,13 @@ public class EventStoreDBRepository<T>: IEventStoreDBRepository<T> where T : cla
         this.eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
     }
 
-    public Task<T?> Find(long id, CancellationToken cancellationToken) =>
-        eventStore.AggregateStream<T>(
+    public Task<T?> Find(Guid id, CancellationToken cancellationToken)
+    {
+        return eventStore.AggregateStream<T>(
             id,
             cancellationToken
         );
+    }
 
     public async Task<ulong> Add(T aggregate, CancellationToken cancellationToken = default)
     {
@@ -38,7 +44,8 @@ public class EventStoreDBRepository<T>: IEventStoreDBRepository<T> where T : cla
         return result.NextExpectedStreamRevision;
     }
 
-    public async Task<ulong> Update(T aggregate, long? expectedRevision = null, CancellationToken cancellationToken = default)
+    public async Task<ulong> Update(T aggregate, long? expectedRevision = null,
+        CancellationToken cancellationToken = default)
     {
         var nextVersion = expectedRevision ?? aggregate.Version;
 
@@ -51,8 +58,11 @@ public class EventStoreDBRepository<T>: IEventStoreDBRepository<T> where T : cla
         return result.NextExpectedStreamRevision;
     }
 
-    public Task<ulong> Delete(T aggregate, long? expectedRevision = null, CancellationToken cancellationToken = default) =>
-        Update(aggregate, expectedRevision, cancellationToken);
+    public Task<ulong> Delete(T aggregate, long? expectedRevision = null,
+        CancellationToken cancellationToken = default)
+    {
+        return Update(aggregate, expectedRevision, cancellationToken);
+    }
 
     private static IEnumerable<EventData> GetEventsToStore(T aggregate)
     {

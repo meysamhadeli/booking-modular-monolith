@@ -6,10 +6,6 @@ namespace BuildingBlocks.Exception;
 
 public class GrpcExceptionInterceptor : Interceptor
 {
-    public GrpcExceptionInterceptor(ILogger<GrpcExceptionInterceptor> logger)
-    {
-    }
-
     public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(
         TRequest request,
         ServerCallContext context,
@@ -21,7 +17,7 @@ public class GrpcExceptionInterceptor : Interceptor
         }
         catch (System.Exception exception)
         {
-            throw new RpcException(new Status(StatusCode.Cancelled, exception.Message));
+            throw new RpcException(new Status(StatusCode.Internal, exception.Message));
         }
     }
 }

@@ -1,0 +1,19 @@
+{
+  "name": "booking-modular-monolith",
+  "version": "1.0.0",
+  "description": "booking-modular-monolith",
+  "author": "Meysam Hadeli",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky && dotnet tool restore",
+    "format": "dotnet format booking-modular-monolith.sln --severity error --verbosity detailed",
+    "ci-format": "dotnet format booking-modular-monolith.sln --verify-no-changes --severity error --verbosity detailed",
+    "upgrade-packages": "dotnet outdated --upgrade"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "husky": "^9.1.6"
+  }
+}

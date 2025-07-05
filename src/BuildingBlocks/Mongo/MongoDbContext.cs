@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -15,12 +16,13 @@ public class MongoDbContext : IMongoDbContext
     public IMongoDatabase Database { get; }
     public IMongoClient MongoClient { get; }
     protected readonly IList<Func<Task>> _commands;
+    private static readonly bool _isSerializerRegisterd;
 
     static MongoDbContext()
     {
         BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
     }
-    
+
     public MongoDbContext(IOptions<MongoOptions> options)
     {
         RegisterConventions();
@@ -49,7 +51,7 @@ public class MongoDbContext : IMongoDbContext
 
     public IMongoCollection<T> GetCollection<T>(string? name = null)
     {
-        return Database.GetCollection<T>(name ?? typeof(T).Name.ToLower());
+        return Database.GetCollection<T>(name ?? typeof(T).Name.ToLower(CultureInfo.CurrentCulture));
     }
 
     public void Dispose()

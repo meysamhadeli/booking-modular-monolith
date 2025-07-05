@@ -171,9 +171,9 @@ dotnet_diagnostic.CA1031.severity = none
 # CA1303: Do not pass literals as localized parameters
 dotnet_diagnostic.CA1303.severity = none
 # CA1304: Specify CultureInfo
-dotnet_diagnostic.CA1304.severity = none
+dotnet_diagnostic.CA1304.severity = error
 # CA1307: Specify StringComparison for clarity
-dotnet_diagnostic.CA1307.severity = none
+dotnet_diagnostic.CA1307.severity = error
 # CA1308: Normalize strings to uppercase
 dotnet_diagnostic.CA1308.severity = error
 # CA1309: Use ordinal StringComparison

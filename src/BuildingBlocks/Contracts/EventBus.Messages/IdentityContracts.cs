@@ -1,5 +1,5 @@
-using BuildingBlocks.Domain.Event;
+using BuildingBlocks.Core.Event;
 
 namespace BuildingBlocks.Contracts.EventBus.Messages;
 
-public record UserCreated(long Id, string Name, string PassportNumber) : IIntegrationEvent;
+public record UserCreated(Guid Id, string Name, string PassportNumber) : IIntegrationEvent;

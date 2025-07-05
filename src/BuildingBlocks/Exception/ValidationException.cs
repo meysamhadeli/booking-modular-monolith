@@ -1,13 +1,11 @@
-using BuildingBlocks.Validation;
+using System.Net;
 
 namespace BuildingBlocks.Exception
 {
     public class ValidationException : CustomException
     {
-        public ValidationException(ValidationResultModel validationResultModel)
+        public ValidationException(string message, int? code = null) : base(message, HttpStatusCode.BadRequest, code: code)
         {
-            ValidationResultModel = validationResultModel;
         }
-        public ValidationResultModel ValidationResultModel { get; }
     }
 }

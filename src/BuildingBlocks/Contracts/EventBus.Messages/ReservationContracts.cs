@@ -1,5 +1,5 @@
-using BuildingBlocks.Domain.Event;
+using BuildingBlocks.Core.Event;
 
 namespace BuildingBlocks.Contracts.EventBus.Messages;
 
-public record BookingCreated(long Id) : IIntegrationEvent;
+public record BookingCreated(Guid Id) : IIntegrationEvent;

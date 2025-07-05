@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BuildingBlocks.Web;
 
+using MassTransit;
 using Microsoft.Extensions.Options;
 
 public static class ConfigurationExtensions

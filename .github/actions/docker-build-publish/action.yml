@@ -1,0 +1,53 @@
+﻿name: "Publish and Build Docker"
+description: "Publish and Build Docker "
+
+# Input parameters allow you to specify data that the action expects to use during runtime. GitHub stores input parameters as environment variables.(so they are just string)
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#inputs
+inputs:
+  tag-name:
+    description: "Tag Name"
+    required: true
+  image-name:
+    description: "Image Name"
+    required: true
+  registry-username:
+    description: "Registry username"
+    required: true
+  registry-password:
+    description: "Registry password"
+    required: true
+  dockerfile-path:
+    description: "Dockerfile path"
+    required: true
+
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs-for-composite-actions
+runs:
+  using: "composite"
+  steps:
+
+    ##ref: https://docs.docker.com/language/golang/configure-ci-cd/
+    ##ref: https://event-driven.io/en/how_to_buid_and_push_docker_image_with_github_actions
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      with:
+        username: ${{ inputs.registry-username }}
+        password: ${{ inputs.registry-password }}
+
+    - name: Docker Tag Info
+      shell: bash
+      run:
+        echo "Docker tag version is:" ${{ inputs.tag-name }}
+
+    - name: Build Docker Image
+      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      shell: bash
+      run: |
+        docker build -t ${{ inputs.registry-username }}/${{ inputs.image-name }}:${{ inputs.tag-name }} -f "${{ github.workspace }}/${{ inputs.dockerfile-path }}" .
+
+    - name: Publish Docker Image
+      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      shell: bash
+      run: |
+        docker push ${{ inputs.registry-username }}/${{ inputs.image-name }}:${{ inputs.tag-name }}
+

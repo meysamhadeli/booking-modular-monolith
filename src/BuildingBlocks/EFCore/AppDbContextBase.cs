@@ -1,25 +1,25 @@
-using System.Security.Claims;
-using BuildingBlocks.Domain.Event;
-using BuildingBlocks.Domain.Model;
-using Microsoft.AspNetCore.Http;
+using System.Collections.Immutable;
+using BuildingBlocks.Core.Event;
+using BuildingBlocks.Core.Model;
+using BuildingBlocks.Web;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
+using IsolationLevel = System.Data.IsolationLevel;
 
 namespace BuildingBlocks.EFCore;
 
-using System.Collections.Immutable;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Exception = System.Exception;
-using IsolationLevel = System.Data.IsolationLevel;
-
 public abstract class AppDbContextBase : DbContext, IDbContext
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ICurrentUserProvider? _currentUserProvider;
+    private readonly ILogger<AppDbContextBase>? _logger;
     private IDbContextTransaction _currentTransaction;
 
-    protected AppDbContextBase(DbContextOptions options, IHttpContextAccessor httpContextAccessor) :
+    protected AppDbContextBase(DbContextOptions options, ICurrentUserProvider? currentUserProvider = null, ILogger<AppDbContextBase>? logger = null) :
         base(options)
     {
-        _httpContextAccessor = httpContextAccessor;
+        _currentUserProvider = currentUserProvider;
+        _logger = logger;
     }
 
 
@@ -31,7 +31,8 @@ public abstract class AppDbContextBase : DbContext, IDbContext
 
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
-        if (_currentTransaction != null) return;
+        if (_currentTransaction != null)
+            return;
 
         _currentTransaction = await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
     }
@@ -106,6 +107,7 @@ public abstract class AppDbContextBase : DbContext, IDbContext
 
                 if (databaseValues == null)
                 {
+                    _logger.LogError("The record no longer exists in the database, The record has been deleted by another user.");
                     throw;
                 }
 
@@ -140,13 +142,10 @@ public abstract class AppDbContextBase : DbContext, IDbContext
     {
         try
         {
-            var nameIdentifier = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            long.TryParse(nameIdentifier, out var userId);
-            
             foreach (var entry in ChangeTracker.Entries<IAggregate>())
             {
                 var isAuditable = entry.Entity.GetType().IsAssignableTo(typeof(IAggregate));
+                var userId = _currentUserProvider?.GetCurrentUserId() ?? 0;
 
                 if (isAuditable)
                 {
@@ -174,9 +173,9 @@ public abstract class AppDbContextBase : DbContext, IDbContext
                 }
             }
         }
-        catch (Exception ex)
+        catch (System.Exception ex)
         {
-            throw new Exception("try for find IAggregate", ex);
+            throw new System.Exception("try for find IAggregate", ex);
         }
     }
 }
