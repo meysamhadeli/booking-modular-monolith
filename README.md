@@ -6,7 +6,7 @@
     </div>
 </div>
 
-> 🚀 **A practical and imaginary Modular Monolith for implementing an infrastructure for up and running Modular system with the latest technology and architecture like Vertical Slice Architecture, Event Driven Architecture, CQRS, DDD, gRpc and Cap in .Net 9.**
+> 🚀 **A practical and imaginary Modular Monolith for implementing an infrastructure for up and running Modular system with the latest technology and architecture like Vertical Slice Architecture, Event Driven Architecture, CQRS, DDD, gRpc and Masstransit in .Net 9.**
 
 > 💡 **This project is not business-oriented and most of my focus was in the thechnical part for implement a Modular system with a sample project. In this project I implemented some concept in Modular Monolith like Inmemory Broker, Tracing, Event Driven Architecture, Vertical Slice Architecture, CQRS, DDD and gRpc.**
 
@@ -46,7 +46,7 @@
 - :sparkle: Using `CQRS` implementation with `MediatR` library.
 - :sparkle: Using `Postgres` for `write side` database.
 - :sparkle: Using `MongoDB` for `read side` database.
-- :sparkle: Using `Event Store` for `write side` of Booking Microservice/Module to store all `historical change` of aggregate.
+- :sparkle: Using `Event Store` for `write side` of Booking Module to store all `historical change` of aggregate.
 - :sparkle: Using `Inbox Pattern` for ensuring message idempotency for receiver and `Exactly once Delivery`.
 - :sparkle: Using `Outbox Pattern` for ensuring no message is lost and there is at `At Least One Delivery`.
 - :sparkle: Using `Unit Testing` for testing small units and mocking our dependencies with `Nsubstitute`.
@@ -83,7 +83,6 @@
 - ✔️ **[`Hellang.Middleware.ProblemDetails`](https://github.com/khellang/Middleware/tree/master/src/ProblemDetails)** - A middleware for handling exception in .Net Core.
 - ✔️ **[`NewId`](https://github.com/phatboyg/NewId)** - NewId can be used as an embedded unique ID generator that produces 128 bit (16 bytes) sequential IDs.
 - ✔️ **[`Yarp`](https://github.com/microsoft/reverse-proxy)** - Reverse proxy toolkit for building fast proxy servers in .NET.
-- ✔️ **[`Tye`](https://github.com/dotnet/tye)** - Developer tool that makes developing, testing, and deploying microservices and distributed applications easier.
 - ✔️ **[`gRPC-dotnet`](https://github.com/grpc/grpc-dotnet)** - gRPC functionality for .NET.
 - ✔️ **[`EventStore`](https://github.com/EventStore/EventStore)** - The open-source, functional database with Complex Event Processing.
 - ✔️ **[`MongoDB.Driver`](https://github.com/mongodb/mongo-csharp-driver)** - .NET Driver for MongoDB.
@@ -209,27 +208,27 @@ docker-compose -f ./deployments/docker-compose/docker-compose.yaml up -d
 ```
 
 > ### Build
-To `build` all microservices, run this command in the `root` of the project:
+To `build` all modules, run this command in the `root` of the project:
 ```bash
 dotnet build
 ```
 
 > ### Run
-To `run` each microservice, run this command in the root of the `Api` folder of each microservice where the `csproj` file is located:
+To `run` all modules, run this command in the root of the `Api` folder:
 ```bash
 dotnet run
 ```
 
 > ### Test
 
-To `test` all microservices, run this command in the `root` of the project:
+To `test` all modules, run this command in the `root` of the project:
 ```bash
 dotnet test
 ```
 
 > ### Documentation Apis
 
-Each microservice provides `API documentation` and navigate to `/swagger` for `Swagger OpenAPI` or `/scalar/v1` for `Scalar OpenAPI` to visit list of endpoints.
+For checking `API documentation`, navigate to `/swagger` for `Swagger OpenAPI` or `/scalar/v1` for `Scalar OpenAPI` to visit list of endpoints.
 
 As part of API testing, I created the [booking.rest](./booking.rest) file which can be run with the [REST Client](https://github.com/Huachao/vscode-restclient) `VSCode plugin`.
 
