@@ -1,13 +1,9 @@
-using System.Threading.RateLimiting;
 using Booking;
 using BuildingBlocks.Core;
 using BuildingBlocks.Exception;
-using BuildingBlocks.HealthCheck;
 using BuildingBlocks.Jwt;
-using BuildingBlocks.Logging;
 using BuildingBlocks.MassTransit;
 using BuildingBlocks.OpenApi;
-using BuildingBlocks.OpenTelemetryCollector;
 using BuildingBlocks.PersistMessageProcessor;
 using BuildingBlocks.ProblemDetails;
 using BuildingBlocks.Web;
@@ -16,7 +12,6 @@ using Flight;
 using Identity;
 using Microsoft.AspNetCore.Mvc;
 using Passenger;
-using Serilog;
 
 namespace Api.Extensions;
 
@@ -24,26 +19,15 @@ public static class SharedInfrastructureExtensions
 {
     public static WebApplicationBuilder AddSharedInfrastructure(this WebApplicationBuilder builder)
     {
-        builder.Host.UseDefaultServiceProvider(
-            (context, options) =>
-            {
-                // Service provider validation
-                // ref: https://andrewlock.net/new-in-asp-net-core-3-service-provider-validation/
-                options.ValidateScopes = context.HostingEnvironment.IsDevelopment() ||
-                                         context.HostingEnvironment.IsStaging() ||
-                                         context.HostingEnvironment.IsEnvironment("tests");
-
-                options.ValidateOnBuild = true;
-            });
-
         var appOptions = builder.Services.GetOptions<AppOptions>(nameof(AppOptions));
         Console.WriteLine(FiggleFonts.Standard.Render(appOptions.Name));
 
-        builder.AddCustomSerilog(builder.Environment);
+        builder.AddServiceDefaults();
+
         builder.Services.AddJwt();
         builder.Services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
         builder.Services.AddTransient<AuthHeaderHandler>();
-        builder.Services.AddPersistMessageProcessor();
+        builder.AddPersistMessageProcessor();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddControllers();
@@ -59,26 +43,6 @@ public static class SharedInfrastructureExtensions
 
         builder.Services.Configure<ApiBehaviorOptions>(
             options => options.SuppressModelStateInvalidFilter = true);
-
-        builder.Services.AddRateLimiter(
-            options =>
-            {
-                options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(
-                    httpContext =>
-                        RateLimitPartition.GetFixedWindowLimiter(
-                            partitionKey: httpContext.User.Identity?.Name ??
-                                          httpContext.Request.Headers.Host.ToString(),
-                            factory: partition => new FixedWindowRateLimiterOptions
-                            {
-                                AutoReplenishment = true,
-                                PermitLimit = 10,
-                                QueueLimit = 0,
-                                Window = TimeSpan.FromMinutes(1)
-                            }));
-            });
-
-        builder.AddCustomObservability();
-        builder.Services.AddCustomHealthCheck();
 
         builder.Services.AddGrpc(
             options =>
@@ -110,18 +74,12 @@ public static class SharedInfrastructureExtensions
     {
         var appOptions = app.Configuration.GetOptions<AppOptions>(nameof(AppOptions));
 
-        app.UseCustomProblemDetails();
-        app.UseCustomObservability();
-        app.UseCustomHealthCheck();
+        app.UseServiceDefaults();
 
-        app.UseSerilogRequestLogging(
-            options =>
-            {
-                options.EnrichDiagnosticContext = LogEnrichHelper.EnrichFromRequest;
-            });
+        app.UseCustomProblemDetails();
 
         app.UseCorrelationId();
-        app.UseRateLimiter();
+
         app.MapGet("/", x => x.Response.WriteAsync(appOptions.Name));
 
         if (app.Environment.IsDevelopment())

@@ -30,6 +30,7 @@
     - [Upgrade Nuget Packages](#upgrade-nuget-packages)
 - [How to Run](#how-to-run)
   - [Config Certificate](#config-certificate)
+  - [Aspire](#aspire)
   - [Docker Compose](#docker-compose)
   - [Build](#build)
   - [Run](#run)
@@ -62,7 +63,7 @@
 - :sparkle: Using `OpenTelemetry` for distributed tracing on top of `Jaeger`.
 - :sparkle: Using `OpenTelemetry` for monitoring on top of `Prometheus` and `Grafana`.
 - :sparkle: Using `IdentityServer` for authentication and authorization base on `OpenID-Connect` and `OAuth2`.
-
+- :sparkle: Using `Aspire` for `service discovery`, `observability`, and `local orchestration` of microservices.
 
 ## Technologies - Libraries
 
@@ -92,7 +93,7 @@
 - ✔️ **[`Respawn`](https://github.com/jbogard/Respawn)** - Respawn is a small utility to help in resetting test databases to a clean state.
 - ✔️ **[`Testcontainers`](https://github.com/testcontainers/testcontainers-dotnet)** - Testcontainers for .NET is a library to support tests with throwaway instances of Docker containers.
 - ✔️ **[`K6`](https://github.com/grafana/k6)** - Modern load testing for developers and testers in the DevOps era.
-
+- ✔️ **[`Aspire`](https://github.com/dotnet/aspire)** - .NET stack for building and orchestrating observable, distributed cloud-native applications.
 
 ## Key Features
 1. **Modular Design**: The application is divided into modules, each responsible for a specific functionality.
@@ -200,8 +201,19 @@ dotnet dev-certs https --trust
 dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p $CREDENTIAL_PLACEHOLDER$
 dotnet dev-certs https --trust
 ```
-> ### Docker Compose
 
+
+> ### Aspire
+
+To run the application using the `Aspire App Host`, execute the following command from the solution root:
+
+```bash
+aspire run
+```
+
+> Note:The `Aspire dashboard` will be available at `http://localhost:18888`
+
+> ### Docker Compose
 
 To run this app in `Docker`, use the [docker-compose.yaml](./deployments/docker-compose/docker-compose.yaml) and execute the below command at the `root` of the application:
 
