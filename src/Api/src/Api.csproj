@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Aspire\src\ServiceDefaults\ServiceDefaults.csproj" />
     <ProjectReference Include="..\..\Modules\Booking\src\Booking.csproj" />
     <ProjectReference Include="..\..\Modules\Flight\src\Flight.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\src\Identity.csproj" />
