@@ -6,7 +6,7 @@
     </div>
 </div>
 
-> 🚀 **A practical Modular Monolith architecture with the latest technologies and architecture like Vertical Slice Architecture, Event Driven Architecture, CQRS, DDD, gRpc and Masstransit in .Net 9.**
+> 🚀 **A practical Modular Monolith architecture with the latest technologies and architecture like Vertical Slice Architecture, Event Driven Architecture, CQRS, DDD, gRpc, Masstransit, and Aspire in .Net 9.**
 
 ## You can find other version of this project here:
 - [Booking with Microservices Architecture](https://github.com/meysamhadeli/booking-microservices)
