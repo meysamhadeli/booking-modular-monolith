@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <RootNamespace>Api</RootNamespace>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Aspire\src\ServiceDefaults\ServiceDefaults.csproj" />
     <ProjectReference Include="..\..\Modules\Booking\src\Booking.csproj" />
@@ -11,5 +9,4 @@
     <ProjectReference Include="..\..\Modules\Identity\src\Identity.csproj" />
     <ProjectReference Include="..\..\Modules\Passenger\src\Passenger.csproj" />
   </ItemGroup>
-
 </Project>
