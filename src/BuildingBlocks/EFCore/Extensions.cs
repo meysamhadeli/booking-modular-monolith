@@ -15,8 +15,11 @@ namespace BuildingBlocks.EFCore;
 
 public static class Extensions
 {
-    public static IServiceCollection AddCustomDbContext<TContext>(this WebApplicationBuilder builder, string? connectionName = "")
-    where TContext : DbContext, IDbContext
+    public static IServiceCollection AddCustomDbContext<TContext>(
+        this WebApplicationBuilder builder,
+        string? connectionName = ""
+    )
+        where TContext : DbContext, IDbContext
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -26,22 +29,29 @@ public static class Extensions
             (sp, options) =>
             {
                 var aspireConnectionString = builder.Configuration.GetConnectionString(connectionName.Kebaberize());
-                var connectionString = aspireConnectionString ?? sp.GetRequiredService<PostgresOptions>().ConnectionString;
 
-                ArgumentException.ThrowIfNullOrEmpty(connectionString);
+                var connectionString =
+                    aspireConnectionString
+                    ?? builder.Configuration.GetSection($"PostgresOptions:ConnectionString:{connectionName}").Value;
 
-                options.UseNpgsql(
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new ArgumentException($"Connection string '{connectionName}' not found.");
+                }
+
+                options
+                    .UseNpgsql(
                         connectionString,
                         dbOptions =>
                         {
                             dbOptions.MigrationsAssembly(typeof(TContext).Assembly.GetName().Name);
-                        })
+                        }
+                    )
                     .UseSnakeCaseNamingConvention();
 
-                // Suppress warnings for pending model changes
-                options.ConfigureWarnings(
-                    w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
-            });
+                options.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
+            }
+        );
 
         builder.Services.AddScoped<ISeedManager, SeedManager>();
         builder.Services.AddScoped<IDbContext>(sp => sp.GetRequiredService<TContext>());
@@ -49,9 +59,8 @@ public static class Extensions
         return builder.Services;
     }
 
-
     public static IApplicationBuilder UseMigration<TContext>(this IApplicationBuilder app)
-    where TContext : DbContext, IDbContext
+        where TContext : DbContext, IDbContext
     {
         MigrateAsync<TContext>(app.ApplicationServices).GetAwaiter().GetResult();
 
@@ -65,14 +74,16 @@ public static class Extensions
     {
         Expression<Func<IAggregate, bool>> filterExpr = e => !e.IsDeleted;
 
-        foreach (var mutableEntityType in modelBuilder.Model.GetEntityTypes()
-                     .Where(m => m.ClrType.IsAssignableTo(typeof(IEntity))))
+        foreach (
+            var mutableEntityType in modelBuilder
+                .Model.GetEntityTypes()
+                .Where(m => m.ClrType.IsAssignableTo(typeof(IEntity)))
+        )
         {
             // modify expression to handle correct child type
             var parameter = Expression.Parameter(mutableEntityType.ClrType);
 
-            var body = ReplacingExpressionVisitor
-                .Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
+            var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
 
             var lambdaExpression = Expression.Lambda(body, parameter);
 
@@ -89,10 +100,10 @@ public static class Extensions
             // Replace table names
             entity.SetTableName(entity.GetTableName()?.Underscore());
 
-            var tableObjectIdentifier =
-                StoreObjectIdentifier.Table(
-                    entity.GetTableName()?.Underscore()!,
-                    entity.GetSchema());
+            var tableObjectIdentifier = StoreObjectIdentifier.Table(
+                entity.GetTableName()?.Underscore()!,
+                entity.GetSchema()
+            );
 
             // Replace column names
             foreach (var property in entity.GetProperties())
@@ -113,7 +124,7 @@ public static class Extensions
     }
 
     private static async Task MigrateAsync<TContext>(IServiceProvider serviceProvider)
-    where TContext : DbContext, IDbContext
+        where TContext : DbContext, IDbContext
     {
         await using var scope = serviceProvider.CreateAsyncScope();
         var context = scope.ServiceProvider.GetRequiredService<TContext>();

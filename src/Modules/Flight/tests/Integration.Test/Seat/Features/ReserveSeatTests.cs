@@ -1,4 +1,3 @@
-using Api;
 using BuildingBlocks.TestBase;
 using Flight;
 using Flight.Data;
@@ -7,6 +6,7 @@ using Integration.Test.Fakes;
 using Xunit;
 
 namespace Integration.Test.Seat.Features;
+
 public class ReserveSeatTests : FlightIntegrationTestBase
 {
     public ReserveSeatTests(
