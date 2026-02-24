@@ -18,31 +18,31 @@ public class QueryHandlerMetrics
     public QueryHandlerMetrics(IDiagnosticsProvider diagnosticsProvider)
     {
         _activeQueriesCounter = diagnosticsProvider.Meter.CreateUpDownCounter<long>(
-            TelemetryTags.Metrics.Application.Commands.ActiveCount,
+            TelemetryTags.Metrics.Application.Queries.ActiveCount,
             unit: "{active_queries}",
             description: "Number of queries currently being handled"
         );
 
         _totalQueriesNumber = diagnosticsProvider.Meter.CreateCounter<long>(
-            TelemetryTags.Metrics.Application.Commands.TotalExecutedCount,
+            TelemetryTags.Metrics.Application.Queries.TotalExecutedCount,
             unit: "{total_queries}",
             description: "Total number of executed query that sent to query handlers"
         );
 
         _successQueriesNumber = diagnosticsProvider.Meter.CreateCounter<long>(
-            TelemetryTags.Metrics.Application.Commands.SuccessCount,
+            TelemetryTags.Metrics.Application.Queries.SuccessCount,
             unit: "{success_queries}",
             description: "Number queries that handled successfully"
         );
 
         _failedQueriesNumber = diagnosticsProvider.Meter.CreateCounter<long>(
-            TelemetryTags.Metrics.Application.Commands.FaildCount,
+            TelemetryTags.Metrics.Application.Queries.FailedCount,
             unit: "{failed_queries}",
             description: "Number queries that handled with errors"
         );
 
         _handlerDuration = diagnosticsProvider.Meter.CreateHistogram<double>(
-            TelemetryTags.Metrics.Application.Commands.HandlerDuration,
+            TelemetryTags.Metrics.Application.Queries.HandlerDuration,
             unit: "s",
             description: "Measures the duration of query handler"
         );
@@ -112,12 +112,10 @@ public class QueryHandlerMetrics
             _activeQueriesCounter.Add(-1, tags);
         }
 
-        if (!_handlerDuration.Enabled)
-            return;
-
-        var elapsedTimeSeconds = _timer.Elapsed.Seconds;
-
-        _handlerDuration.Record(elapsedTimeSeconds, tags);
+        if (_handlerDuration.Enabled)
+        {
+            _handlerDuration.Record(_timer.Elapsed.TotalSeconds, tags);
+        }
 
         if (_successQueriesNumber.Enabled)
         {
@@ -125,7 +123,7 @@ public class QueryHandlerMetrics
         }
     }
 
-    public void FailedCommand<TQuery>()
+    public void FailedQuery<TQuery>()
     {
         var queryName = typeof(TQuery).Name;
         var handlerType = typeof(TQuery)
@@ -147,6 +145,16 @@ public class QueryHandlerMetrics
             { TelemetryTags.Tracing.Application.Queries.QueryHandler, queryHandlerName },
             { TelemetryTags.Tracing.Application.Queries.QueryHandlerType, handlerType?.FullName },
         };
+
+        if (_activeQueriesCounter.Enabled)
+        {
+            _activeQueriesCounter.Add(-1, tags);
+        }
+
+        if (_handlerDuration.Enabled)
+        {
+            _handlerDuration.Record(_timer.Elapsed.TotalSeconds, tags);
+        }
 
         if (_failedQueriesNumber.Enabled)
         {

@@ -37,7 +37,7 @@ public class CommandHandlerMetrics
         );
 
         _failedCommandsNumber = diagnosticsProvider.Meter.CreateCounter<long>(
-            TelemetryTags.Metrics.Application.Commands.FaildCount,
+            TelemetryTags.Metrics.Application.Commands.FailedCount,
             unit: "{failed_commands}",
             description: "Number commands that handled with errors"
         );
@@ -113,12 +113,10 @@ public class CommandHandlerMetrics
             _activeCommandsCounter.Add(-1, tags);
         }
 
-        if (!_handlerDuration.Enabled)
-            return;
-
-        var elapsedTimeSeconds = _timer.Elapsed.Seconds;
-
-        _handlerDuration.Record(elapsedTimeSeconds, tags);
+        if (_handlerDuration.Enabled)
+        {
+            _handlerDuration.Record(_timer.Elapsed.TotalSeconds, tags);
+        }
 
         if (_successCommandsNumber.Enabled)
         {
@@ -148,6 +146,16 @@ public class CommandHandlerMetrics
             { TelemetryTags.Tracing.Application.Commands.CommandHandler, commandHandlerName },
             { TelemetryTags.Tracing.Application.Commands.CommandHandlerType, handlerType?.FullName },
         };
+
+        if (_activeCommandsCounter.Enabled)
+        {
+            _activeCommandsCounter.Add(-1, tags);
+        }
+
+        if (_handlerDuration.Enabled)
+        {
+            _handlerDuration.Record(_timer.Elapsed.TotalSeconds, tags);
+        }
 
         if (_failedCommandsNumber.Enabled)
         {
