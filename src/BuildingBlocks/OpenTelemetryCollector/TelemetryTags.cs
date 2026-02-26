@@ -231,7 +231,7 @@ public static class TelemetryTags
                 public static string CommandType = $"{Command}.type";
                 public static string CommandHandler = $"{Command}.handler";
                 public static string SuccessCount = $"{CommandHandler}.success.count";
-                public static string FaildCount = $"{CommandHandler}.failed.count";
+                public static string FailedCount = $"{CommandHandler}.failed.count";
                 public static string ActiveCount = $"{CommandHandler}.active.count";
                 public static string TotalExecutedCount = $"{CommandHandler}.total.count";
                 public static string HandlerDuration = $"{CommandHandler}.duration";
@@ -243,7 +243,7 @@ public static class TelemetryTags
                 public static string QueryType = $"{Query}.type";
                 public static string QueryHandler = $"{Query}.handler";
                 public static string SuccessCount = $"{QueryHandler}.success.count";
-                public static string FaildCount = $"{QueryHandler}.failed.count";
+                public static string FailedCount = $"{QueryHandler}.failed.count";
                 public static string ActiveCount = $"{QueryHandler}.active.count";
                 public static string TotalExecutedCount = $"{QueryHandler}.total.count";
                 public static string HandlerDuration = $"{QueryHandler}.duration";
@@ -255,7 +255,7 @@ public static class TelemetryTags
                 public static string EventType = $"{Event}.type";
                 public static string EventHandler = $"{Event}.handler";
                 public static string SuccessCount = $"{EventHandler}.success.count";
-                public static string FaildCount = $"{EventHandler}.failed.count";
+                public static string FailedCount = $"{EventHandler}.failed.count";
                 public static string ActiveCount = $"{EventHandler}.active.count";
                 public static string TotalExecutedCount = $"{EventHandler}.total.count";
                 public static string HandlerDuration = $"{EventHandler}.duration";

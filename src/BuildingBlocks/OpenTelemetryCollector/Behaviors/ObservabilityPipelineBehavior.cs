@@ -16,8 +16,8 @@ public class ObservabilityPipelineBehavior<TRequest, TResponse>(
 {
     public async Task<TResponse> Handle(TRequest message, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var isCommand = message is IQuery<TResponse>;
-        var isQuery = message is ICommand<TResponse>;
+        var isCommand = message is ICommand<TResponse>;
+        var isQuery = message is IQuery<TResponse>;
 
         if (isCommand)
         {
@@ -34,12 +34,7 @@ public class ObservabilityPipelineBehavior<TRequest, TResponse>(
             if (isCommand)
             {
                 var commandResult = await commandActivity.Execute<TRequest, TResponse>(
-                                        async (activity, ct) =>
-                                        {
-                                            var response = await next();
-
-                                            return response;
-                                        },
+                                        async (activity, ct) => await next(),
                                         cancellationToken
                                     );
 
@@ -51,12 +46,7 @@ public class ObservabilityPipelineBehavior<TRequest, TResponse>(
             if (isQuery)
             {
                 var queryResult = await queryActivity.Execute<TRequest, TResponse>(
-                                      async (activity, ct) =>
-                                      {
-                                          var response = await next();
-
-                                          return response;
-                                      },
+                                      async (activity, ct) => await next(),
                                       cancellationToken
                                   );
 
@@ -67,14 +57,14 @@ public class ObservabilityPipelineBehavior<TRequest, TResponse>(
         }
         catch (System.Exception)
         {
-            if (isQuery)
-            {
-                queryMetrics.FailedCommand<TRequest>();
-            }
-
             if (isCommand)
             {
                 commandMetrics.FailedCommand<TRequest>();
+            }
+
+            if (isQuery)
+            {
+                queryMetrics.FailedQuery<TRequest>();
             }
 
             throw;
