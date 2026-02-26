@@ -1,54 +1,42 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS builder
-WORKDIR /
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS builder
 
-COPY ./.editorconfig ./
-COPY ./global.json ./
-COPY ./Directory.Build.props ./
+WORKDIR /src
 
-# Setup working directory for the project
-COPY ./building-blocks/BuildingBlocks.csproj ./building-blocks/
-COPY ./2-modular-monolith-architecture-style/src/Modules/Booking/src/Booking.csproj ./2-modular-monolith-architecture-style/src/Modules/Booking/src/
-COPY ./2-modular-monolith-architecture-style/src/Modules/Flight/src/Flight.csproj ./2-modular-monolith-architecture-style/src/Modules/Flight/src/
-COPY ./2-modular-monolith-architecture-style/src/Modules/Identity/src/Identity.csproj ./2-modular-monolith-architecture-style/src/Modules/Identity/src/
-COPY ./2-modular-monolith-architecture-style/src/Modules/Passenger/src/Passenger.csproj ./2-modular-monolith-architecture-style/src/Modules/Passenger/src/
-COPY ./2-modular-monolith-architecture-style/src/Api/src/Api.csproj ./2-modular-monolith-architecture-style/src/Api/src/
+# Copy solution-level files
+COPY .editorconfig .
+COPY global.json .
+COPY Directory.Build.props .
 
-# Restore nuget packages
-RUN --mount=type=cache,id=booking_nuget,target=/root/.nuget/packages \
-    dotnet restore ./2-modular-monolith-architecture-style/src/Api/src/Api.csproj
+# Copy project files first (better Docker layer caching)
+COPY src/BuildingBlocks/BuildingBlocks.csproj src/BuildingBlocks/
+COPY src/Modules/Booking/src/Booking.csproj src/Modules/Booking/src/
+COPY src/Modules/Flight/src/Flight.csproj src/Modules/Flight/src/
+COPY src/Modules/Identity/src/Identity.csproj src/Modules/Identity/src/
+COPY src/Modules/Passenger/src/Passenger.csproj src/Modules/Passenger/src/
+COPY src/Api/src/Api.csproj src/Api/src/
+COPY src/Aspire/src/ServiceDefaults/ServiceDefaults.csproj src/Aspire/src/ServiceDefaults/
 
-# Copy project files
-COPY ./building-blocks ./building-blocks/
-COPY ./2-modular-monolith-architecture-style/src/Modules/Booking/src/ ./2-modular-monolith-architecture-style/src/Modules/Booking/src/
-COPY ./2-modular-monolith-architecture-style/src/Modules/Flight/src/ ./2-modular-monolith-architecture-style/src/Modules/Flight/src/
-COPY ./2-modular-monolith-architecture-style/src/Modules/Identity/src/ ./2-modular-monolith-architecture-style/src/Modules/Identity/src/
-COPY ./2-modular-monolith-architecture-style/src/Modules/Passenger/src/ ./2-modular-monolith-architecture-style/src/Modules/Passenger/src/
-COPY ./2-modular-monolith-architecture-style/src/Api/src/ ./2-modular-monolith-architecture-style/src/Api/src/
+# Restore packages
+RUN dotnet restore src/Api/src/Api.csproj
 
-# Build project with Release configuration
-# and no restore, as we did it already
-RUN ls
-RUN --mount=type=cache,id=booking_nuget,target=/root/.nuget/packages\
-    dotnet build  -c Release --no-restore ./2-modular-monolith-architecture-style/src/Api/src/Api.csproj
+# Copy everything else
+COPY src ./src
 
-WORKDIR /2-modular-monolith-architecture-style/src/Api/src
+# Build
+RUN dotnet build src/Api/src/Api.csproj -c Release --no-restore
 
-# Publish project to output folder
-# and no build, as we did it already
-RUN --mount=type=cache,id=booking_nuget,target=/root/.nuget/packages\
-    dotnet publish -c Release --no-build -o out
+# Publish
+RUN dotnet publish src/Api/src/Api.csproj -c Release --no-build -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
+# Runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 
-# Setup working directory for the project
-WORKDIR /
-COPY --from=builder /2-modular-monolith-architecture-style/src/Api/src/out  .
+WORKDIR /app
+COPY --from=builder /app/publish .
 
-ENV ASPNETCORE_URLS="https://*:443, http://*:80"
+ENV ASPNETCORE_URLS=http://+:80
 ENV ASPNETCORE_ENVIRONMENT=docker
 
 EXPOSE 80
-EXPOSE 443
 
 ENTRYPOINT ["dotnet", "Api.dll"]
-
