@@ -216,45 +216,6 @@ public class TestFixture<TEntryPoint> : IAsyncLifetime
         return result;
     }
 
-    public async Task<bool> WaitForConsuming<TMessage>(CancellationToken cancellationToken = default)
-        where TMessage : class, IEvent
-    {
-        var result = await WaitUntilConditionMet(async () =>
-        {
-            var consumed = await TestHarness.Consumed.Any<TMessage>(cancellationToken);
-
-            return consumed;
-        });
-
-        return result;
-    }
-
-    public async Task<bool> ShouldProcessedPersistInternalCommand<TInternalCommand>(
-        CancellationToken cancellationToken = default
-    )
-        where TInternalCommand : class, IInternalCommand
-    {
-        var result = await WaitUntilConditionMet(async () =>
-        {
-            return await ExecuteScopeAsync(async sp =>
-            {
-                var persistMessageProcessor = sp.GetService<IPersistMessageProcessor>();
-
-                Guard.Against.Null(persistMessageProcessor, nameof(persistMessageProcessor));
-
-                var filter = await persistMessageProcessor.GetByFilterAsync(x =>
-                    x.DeliveryType == MessageDeliveryType.Internal && typeof(TInternalCommand).ToString() == x.DataType
-                );
-
-                var res = filter.Any(x => x.MessageStatus == MessageStatus.Processed);
-
-                return res;
-            });
-        });
-
-        return result;
-    }
-
     // Ref: https://tech.energyhelpline.com/in-memory-testing-with-masstransit/
     private async Task<bool> WaitUntilConditionMet(Func<Task<bool>> conditionToMet, int? timeoutSecond = null)
     {
