@@ -338,7 +338,7 @@ services:
       args:
         Version: "1"
       context: ../../
-      dockerfile: src/Api/dev.Dockerfile
+      dockerfile: src/Api/Dockerfile
     container_name: booking_modular_monolith
     ports:
       - 3001:80
@@ -347,7 +347,7 @@ services:
       - ~/.aspnet/https:/https:ro
     environment:
       - ASPNETCORE_ENVIRONMENT=docker
-      - ASPNETCORE_URLS=http://+
+      - ASPNETCORE_URLS=https://+;http://+
       - ASPNETCORE_HTTPS_PORT=3000
       - ASPNETCORE_HTTP_PORT=3001
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
