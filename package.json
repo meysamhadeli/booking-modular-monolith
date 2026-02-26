@@ -7,8 +7,8 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky && dotnet tool restore",
-    "format": "dotnet format booking-modular-monolith.sln --severity error --verbosity detailed",
-    "ci-format": "dotnet format booking-modular-monolith.sln --verify-no-changes --severity error --verbosity detailed",
+    "format": "dotnet tool run dotnet-csharpier booking-modular-monolith.sln",
+    "ci-format": "dotnet tool run dotnet-csharpier booking-modular-monolith.sln --check",
     "upgrade-packages": "dotnet outdated --upgrade"
   },
   "devDependencies": {
