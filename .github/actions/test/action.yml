@@ -54,10 +54,10 @@ runs:
           echo "Testing $file"
           if [ ${{ inputs.no-restore }} == 'true' ]; then
              echo "run tests in no-restore mode"
-             dotnet test "$file" -c Release --no-restore --logger "trx;LogFileName=test-results.trx" || true
+             dotnet test "$file" -c Release --no-restore --logger "trx;LogFileName=test-results.trx" --logger "console;verbosity=normal" --blame-hang --blame-hang-timeout 5m || true
           else
              echo "run tests in restore nuget mode"
-             dotnet test "$file" -c Release --logger "trx;LogFileName=test-results.trx" || true
+             dotnet test "$file" -c Release --logger "trx;LogFileName=test-results.trx" --logger "console;verbosity=normal" --blame-hang --blame-hang-timeout 5m || true
           fi
         done
 
