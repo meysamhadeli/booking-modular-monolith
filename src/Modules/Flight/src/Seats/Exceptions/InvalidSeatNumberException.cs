@@ -1,4 +1,4 @@
-using SmartCharging.Infrastructure.Exceptions;
+using Griffin.Core.Exception;
 
 namespace Flight.Seats.Exceptions;
 

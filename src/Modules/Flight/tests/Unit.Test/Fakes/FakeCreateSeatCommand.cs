@@ -6,7 +6,6 @@ namespace Unit.Test.Fakes;
 using System.Linq;
 using global::Flight.Data.Seed;
 using global::Flight.Seats.Features.CreatingSeat.V1;
-using MassTransit;
 
 public class FakeCreateSeatCommand : AutoFaker<CreateSeat>
 {

@@ -1,4 +1,4 @@
-using BuildingBlocks.Core.Model;
+using Griffin.Core.Model;
 
 namespace Flight.Airports.Models;
 

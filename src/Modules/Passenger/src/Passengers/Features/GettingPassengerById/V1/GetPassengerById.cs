@@ -1,8 +1,8 @@
 namespace Passenger.Passengers.Features.GettingPassengerById.V1;
 
 using Ardalis.GuardClauses;
-using BuildingBlocks.Core.CQRS;
-using BuildingBlocks.Web;
+using Griffin.Core.CQRS;
+using Griffin.Web;
 using Duende.IdentityServer.EntityFramework.Entities;
 using FluentValidation;
 using Mapster;

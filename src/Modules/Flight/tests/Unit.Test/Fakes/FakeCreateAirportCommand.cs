@@ -3,7 +3,6 @@ using AutoBogus;
 namespace Unit.Test.Fakes;
 
 using global::Flight.Airports.Features.CreatingAirport.V1;
-using MassTransit;
 
 public class FakeCreateAirportCommand : AutoFaker<CreateAirport>
 {

@@ -1,7 +1,6 @@
 namespace Integration.Test.Fakes;
 
 using BookingFlight;
-using MassTransit;
 
 public static class FakeReserveSeatResponse
 {

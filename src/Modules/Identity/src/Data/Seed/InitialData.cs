@@ -3,7 +3,6 @@ namespace Identity.Data.Seed;
 using System;
 using System.Collections.Generic;
 using Identity.Models;
-using MassTransit;
 
 public static class InitialData
 {

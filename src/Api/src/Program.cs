@@ -1,6 +1,6 @@
 using Api.Extensions;
 using Booking.Extensions.Infrastructure;
-using BuildingBlocks.Web;
+using Griffin.Web;
 using Flight.Extensions.Infrastructure;
 using Identity.Extensions.Infrastructure;
 using Passenger.Extensions.Infrastructure;

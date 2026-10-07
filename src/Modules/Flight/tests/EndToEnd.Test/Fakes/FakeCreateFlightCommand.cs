@@ -5,7 +5,6 @@ namespace EndToEnd.Test.Fakes;
 
 using global::Flight.Data.Seed;
 using global::Flight.Flights.Features.CreatingFlight.V1;
-using MassTransit;
 
 public sealed class FakeCreateFlightCommand : AutoFaker<CreateFlight>
 {

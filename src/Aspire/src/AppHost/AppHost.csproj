@@ -15,6 +15,7 @@
     <PackageReference Include="Aspire.Hosting.AppHost" Version="13.1.1" />
     <PackageReference Include="Aspire.Hosting.Docker" Version="13.1.1-preview.1.26105.8" />
     <PackageReference Include="Aspire.Hosting.MongoDB" Version="13.1.1" />
+    <PackageReference Include="MassTransit" Version="8.3.6" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.1.1" />
     <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="13.1.1" />
     <PackageReference Include="Aspire.Hosting.Redis" Version="13.1.1" />

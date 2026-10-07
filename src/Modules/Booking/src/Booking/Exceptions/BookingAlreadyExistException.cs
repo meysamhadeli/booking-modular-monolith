@@ -1,5 +1,5 @@
 using System.Net;
-using BuildingBlocks.Exception;
+using Griffin.Core.Exception;
 
 namespace Booking.Booking.Exceptions;
 

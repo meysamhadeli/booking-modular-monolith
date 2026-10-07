@@ -6,11 +6,14 @@
     </div>
 </div>
 
-> 🚀 **A practical Modular Monolith architecture with the latest technologies and architecture like Vertical Slice Architecture, Event Driven Architecture, CQRS, DDD, gRpc, Masstransit, and Aspire in .Net 10.**
+> 🚀 **A practical Modular Monolith architecture with the latest technologies and architecture like Vertical Slice Architecture, Event Driven Architecture, CQRS, DDD, gRpc, Wolverine, and Aspire in .Net 10.**
 
 ## You can find other version of this project here:
 - [Booking with Microservices Architecture](https://github.com/meysamhadeli/booking-microservices)
 - [Booking with Monolith Architecture](https://github.com/meysamhadeli/booking-monolith)
+
+## You can find the reusable infrastructure library (Griffin) of this project here:
+- [Griffin](https://github.com/meysamhadeli/Griffin)
 
 <div>
   <a href='https://codespaces.new/meysamhadeli/booking-modular-monolith?quickstart=1'><img alt='Open in GitHub Codespaces' src='https://github.com/codespaces/badge.svg'></a>
@@ -45,14 +48,14 @@
 
 - :sparkle: Using `Vertical Slice Architecture` for `architecture` level.
 - :sparkle: Using `Domain Driven Design (DDD)` to implement all `business logic`.
-- :sparkle: Using `InMemory Broker` on top of `Masstransit` for `Event Driven Architecture`.
+- :sparkle: Using `Rabbitmq` on top of `Wolverine` for `Event Driven Architecture`.
 - :sparkle: Using `gRPC` for `internal communication`.
 - :sparkle: Using `CQRS` implementation with `MediatR` library.
 - :sparkle: Using `Postgres` for `write side` database.
 - :sparkle: Using `MongoDB` for `read side` database.
 - :sparkle: Using `Event Store` for `write side` of Booking Module to store all `historical change` of aggregate.
-- :sparkle: Using `Inbox Pattern` for ensuring message idempotency for receiver and `Exactly once Delivery`.
-- :sparkle: Using `Outbox Pattern` for ensuring no message is lost and there is at `At Least One Delivery`.
+- :sparkle: Using `Wolverine` durable `Inbox Pattern` for ensuring message idempotency for receiver and `Exactly once Delivery`.
+- :sparkle: Using `Wolverine` durable `Outbox Pattern` for ensuring no message is lost and there is at `At Least One Delivery`.
 - :sparkle: Using `Unit Testing` for testing small units and mocking our dependencies with `Nsubstitute`.
 - :sparkle: Using `End-To-End Testing` and `Integration Testing` for testing `features` with all dependencies using `testcontainers`.
 - :sparkle: Using `Fluent Validation` and a `Validation Pipeline Behaviour` on top of `MediatR`.
@@ -72,7 +75,7 @@
 - ✔️ **[`MVC Versioning API`](https://github.com/microsoft/aspnet-api-versioning)** - Set of libraries which add service API versioning to ASP.NET Web API, OData with ASP.NET Web API, and ASP.NET Core.
 - ✔️ **[`EF Core`](https://github.com/dotnet/efcore)** - Modern object-database mapper for .NET. It supports LINQ queries, change tracking, updates, and schema migrations.
 - ✔️ **[`AspNetCore OpenApi`](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/aspnetcore-openapi)** - Provides built-in support for OpenAPI document generation in ASP.NET Core.
-- ✔️ **[`Masstransit`](https://github.com/MassTransit/MassTransit)** - Distributed Application Framework for .NET.
+- ✔️ **[`Wolverine`](https://wolverinefx.io/)** - Durable messaging and local workflow library for .NET with RabbitMQ transport, inbox/outbox support, and local queues.
 - ✔️ **[`MediatR`](https://github.com/jbogard/MediatR)** - Simple, unambitious mediator implementation in .NET.
 - ✔️ **[`FluentValidation`](https://github.com/FluentValidation/FluentValidation)** - Popular .NET validation library for building strongly-typed validation rules.
 - ✔️ **[`Scalar`](https://github.com/scalar/scalar/tree/main/packages/scalar.aspnetcore)** - Scalar provides an easy way to render beautiful API references based on OpenAPI/Swagger documents.
@@ -177,6 +180,16 @@ npm install
 ```
 
 > Note: In the root of project we have `.husky` folder and it has `commit-msg` file for handling conventional commits rules with provide user friendly message and `pre-commit` file that we can run our `scripts` as a `pre-commit` hooks. that here we call `format` script from [package.json](./package.json) for formatting purpose.
+
+### BuildingBlocks Git Submodule
+
+`src/BuildingBlocks` is a submodule from the [Griffin repository](https://github.com/meysamhadeli/Griffin) and is already referenced by the modules, so we only need to initialize it:
+
+```bash
+git submodule update --init src/BuildingBlocks
+```
+
+> Note: A fresh clone can fetch the submodule in one step with `git clone --recurse-submodules`.
 
 ### Upgrade Nuget Packages
 For upgrading our nuget packages to last version, we use the great package [dotnet-outdated](https://github.com/dotnet-outdated/dotnet-outdated).

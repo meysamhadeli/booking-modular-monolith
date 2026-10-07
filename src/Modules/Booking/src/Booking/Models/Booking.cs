@@ -1,4 +1,4 @@
-using BuildingBlocks.EventStoreDB.Events;
+using Griffin.EventStoreDB.Events;
 
 namespace Booking.Booking.Models;
 

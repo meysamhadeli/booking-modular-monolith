@@ -1,12 +1,11 @@
 using Booking;
-using BuildingBlocks.Core;
-using BuildingBlocks.Exception;
-using BuildingBlocks.Jwt;
-using BuildingBlocks.MassTransit;
-using BuildingBlocks.OpenApi;
-using BuildingBlocks.PersistMessageProcessor;
-using BuildingBlocks.ProblemDetails;
-using BuildingBlocks.Web;
+using Griffin.Core;
+using Griffin.Core.Exception;
+using Griffin.Jwt;
+using Griffin.Wolverine;
+using Griffin.OpenApi;
+using Griffin.ProblemDetails;
+using Griffin.Web;
 using Figgle.Fonts;
 using Flight;
 using Identity;
@@ -27,7 +26,6 @@ public static class SharedInfrastructureExtensions
         builder.Services.AddJwt();
         builder.Services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
         builder.Services.AddTransient<AuthHeaderHandler>();
-        builder.AddPersistMessageProcessor();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddControllers();
@@ -36,10 +34,14 @@ public static class SharedInfrastructureExtensions
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<IEventDispatcher, EventDispatcher>();
 
-        builder.Services.AddCustomMassTransit(
+        builder.AddCustomWolverine(
             builder.Environment,
-            TransportType.InMemory,
-            AppDomain.CurrentDomain.GetAssemblies()
+            TransportType.RabbitMq,
+            persistenceConnectionName: null,
+            typeof(BookingRoot).Assembly,
+            typeof(FlightRoot).Assembly,
+            typeof(IdentityRoot).Assembly,
+            typeof(PassengerRoot).Assembly
         );
 
         builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);

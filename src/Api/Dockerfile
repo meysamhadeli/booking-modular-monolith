@@ -6,9 +6,11 @@ WORKDIR /src
 COPY .editorconfig .
 COPY global.json .
 COPY Directory.Build.props .
+COPY Directory.Build.targets .
 
 # Copy project files first (better Docker layer caching)
-COPY src/BuildingBlocks/BuildingBlocks.csproj src/BuildingBlocks/
+# BuildingBlocks is the Griffin git submodule
+COPY src/BuildingBlocks/ src/BuildingBlocks/
 COPY src/Modules/Booking/src/Booking.csproj src/Modules/Booking/src/
 COPY src/Modules/Flight/src/Flight.csproj src/Modules/Flight/src/
 COPY src/Modules/Identity/src/Identity.csproj src/Modules/Identity/src/

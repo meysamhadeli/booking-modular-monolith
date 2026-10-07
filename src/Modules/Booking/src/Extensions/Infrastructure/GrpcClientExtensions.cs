@@ -1,7 +1,7 @@
 using Booking.Configuration;
 using BookingFlight;
 using BookingPassenger;
-using BuildingBlocks.Web;
+using Griffin.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http.Resilience;
 using Polly;

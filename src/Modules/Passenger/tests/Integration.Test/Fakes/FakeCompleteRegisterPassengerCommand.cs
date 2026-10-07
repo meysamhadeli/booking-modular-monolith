@@ -4,7 +4,6 @@ using Passenger.Passengers.Enums;
 namespace Integration.Test.Fakes;
 
 using global::Passenger.Passengers.Features.CompletingRegisterPassenger.V1;
-using MassTransit;
 
 public sealed class FakeCompleteRegisterPassengerCommand : AutoFaker<CompleteRegisterPassenger>
 {

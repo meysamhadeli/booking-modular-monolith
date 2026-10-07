@@ -1,19 +1,18 @@
 namespace Passenger.Identity.Consumers.RegisteringNewUser.V1;
 
 using Ardalis.GuardClauses;
-using BuildingBlocks.Contracts.EventBus.Messages;
-using BuildingBlocks.Core;
-using BuildingBlocks.Core.Event;
-using BuildingBlocks.Web;
+using Griffin.Core.EventBus.Messages;
+using Griffin.Core;
+using Griffin.Core.Event;
+using Griffin.Web;
 using Data;
 using Humanizer;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Passengers.ValueObjects;
 
-public class RegisterNewUserHandler : IConsumer<UserCreated>
+public class RegisterNewUserHandler
 {
     private readonly PassengerDbContext _passengerDbContext;
     private readonly IEventDispatcher _eventDispatcher;
@@ -31,29 +30,34 @@ public class RegisterNewUserHandler : IConsumer<UserCreated>
         _options = options.Value;
     }
 
-    public async Task Consume(ConsumeContext<UserCreated> context)
+    public async Task Handle(UserCreated message, CancellationToken cancellationToken)
     {
-        Guard.Against.Null(context.Message, nameof(UserCreated));
+        Guard.Against.Null(message, nameof(message));
 
         _logger.LogInformation($"consumer for {nameof(UserCreated).Underscore()} in {_options.Name}");
 
         var passengerExist =
-            await _passengerDbContext.Passengers.AnyAsync(x => x.PassportNumber.Value == context.Message.PassportNumber);
+            await _passengerDbContext.Passengers.AnyAsync(
+                x => x.PassportNumber.Value == message.PassportNumber,
+                cancellationToken);
 
         if (passengerExist)
         {
             return;
         }
 
-        var passenger = Passengers.Models.Passenger.Create(PassengerId.Of(NewId.NextGuid()), Name.Of(context.Message.Name),
-            PassportNumber.Of(context.Message.PassportNumber));
+        var passenger = Passengers.Models.Passenger.Create(
+            PassengerId.Of(message.Id),
+            Name.Of(message.Name),
+            PassportNumber.Of(message.PassportNumber));
 
-        await _passengerDbContext.AddAsync(passenger);
+        await _passengerDbContext.AddAsync(passenger, cancellationToken);
 
-        await _passengerDbContext.SaveChangesAsync();
+        await _passengerDbContext.SaveChangesAsync(cancellationToken);
 
         await _eventDispatcher.SendAsync(
             new PassengerCreatedDomainEvent(passenger.Id, passenger.Name, passenger.PassportNumber),
-            typeof(IInternalCommand));
+            typeof(IInternalCommand),
+            cancellationToken);
     }
 }

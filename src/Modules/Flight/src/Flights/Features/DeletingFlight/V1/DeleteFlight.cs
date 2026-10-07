@@ -1,7 +1,7 @@
 using Ardalis.GuardClauses;
-using BuildingBlocks.Core.CQRS;
-using BuildingBlocks.Core.Event;
-using BuildingBlocks.Web;
+using Griffin.Core.CQRS;
+using Griffin.Core.Event;
+using Griffin.Web;
 using Duende.IdentityServer.EntityFramework.Entities;
 using Flight.Data;
 using Flight.Flights.Exceptions;

@@ -3,7 +3,6 @@ namespace Integration.Test.Fakes;
 using AutoBogus;
 using global::Passenger.Passengers.Enums;
 using global::Passenger.Passengers.Features.CompletingRegisterPassenger.V1;
-using MassTransit;
 
 public class FakeCompleteRegisterPassengerMongoCommand : AutoFaker<CompleteRegisterPassengerMongoCommand>
 {

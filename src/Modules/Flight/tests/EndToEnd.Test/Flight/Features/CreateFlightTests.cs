@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using Api;
-using BuildingBlocks.TestBase;
+using Griffin.TestBase;
 using EndToEnd.Test.Fakes;
 using EndToEnd.Test.Routes;
 using Flight.Data;

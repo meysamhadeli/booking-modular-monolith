@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using BuildingBlocks.Constants;
-using BuildingBlocks.Contracts.EventBus.Messages;
-using BuildingBlocks.Core;
-using BuildingBlocks.EFCore;
+using Griffin.Core.Constants;
+using Griffin.Core.EventBus.Messages;
+using Griffin.Core;
+using Griffin.EFCore;
 using Identity.Identity.Constants;
 using Identity.Identity.Models;
 using Microsoft.AspNetCore.Identity;

@@ -1,9 +1,9 @@
 namespace Passenger.Passengers.Features.CompletingRegisterPassenger.V1;
 
 using Ardalis.GuardClauses;
-using BuildingBlocks.Core.CQRS;
-using BuildingBlocks.Core.Event;
-using BuildingBlocks.Web;
+using Griffin.Core.CQRS;
+using Griffin.Core.Event;
+using Griffin.Web;
 using Data;
 using Dtos;
 using Duende.IdentityServer.EntityFramework.Entities;
@@ -11,7 +11,6 @@ using Exceptions;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
-using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
