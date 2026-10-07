@@ -10,7 +10,7 @@ var pgUsername = builder.AddParameter("pg-username", "postgres", secret: true);
 var pgPassword = builder.AddParameter("pg-password", "postgres", secret: true);
 
 var postgres = builder.AddPostgres("postgres", pgUsername, pgPassword)
-    .WithImage("postgres:latest")
+    .WithImage("postgres:17")
     .WithEndpoint(
         "tcp",
         e =>
@@ -36,14 +36,13 @@ if (builder.ExecutionContext.IsPublishMode)
 var flightDb = postgres.AddDatabase("flight");
 var passengerDb = postgres.AddDatabase("passenger");
 var identityDb = postgres.AddDatabase("identity");
-var persistMessageDb = postgres.AddDatabase("persist-message");
+var persistMessageDb = postgres.AddDatabase("wolverine");
 
 var mongoUsername = builder.AddParameter("mongo-username", "root", secret: true);
 var mongoPassword = builder.AddParameter("mongo-password", "secret", secret: true);
 
 var mongo = builder.AddMongoDB("mongo", userName: mongoUsername, password: mongoPassword)
-    .WithImage("mongo")
-    .WithImageTag("latest")
+    .WithImage("mongo:8.0")
     .WithEndpoint(
         "tcp",
         e =>
@@ -62,7 +61,7 @@ if (builder.ExecutionContext.IsPublishMode)
 
 
 var redis = builder.AddRedis("redis")
-    .WithImage("redis:latest")
+    .WithImage("redis:7.4")
     .WithEndpoint(
         "tcp",
         e =>
@@ -81,7 +80,7 @@ if (builder.ExecutionContext.IsPublishMode)
 
 
 var eventstore = builder.AddEventStore("eventstore")
-    .WithImage("eventstore/eventstore")
+    .WithImage("eventstore/eventstore:24.10.5-bookworm-slim")
     .WithEnvironment("EVENTSTORE_CLUSTER_SIZE", "1")
     .WithEnvironment("EVENTSTORE_RUN_PROJECTIONS", "All")
     .WithEnvironment("EVENTSTORE_START_STANDARD_PROJECTIONS", "True")
@@ -115,6 +114,7 @@ var rabbitmqPassword = builder.AddParameter("rabbitmq-password", "guest", secret
 
 var rabbitmq = builder.AddRabbitMQ("rabbitmq", rabbitmqUsername, rabbitmqPassword)
     .WithManagementPlugin()
+    .WithImage("rabbitmq:4.3.6-management")
     .WithEndpoint(
         "tcp",
         e =>
@@ -158,7 +158,7 @@ if (builder.ExecutionContext.IsPublishMode)
     jaeger.WithLifetime(ContainerLifetime.Persistent);
 }
 
-var zipkin = builder.AddContainer("zipkin-all-in-one", "openzipkin/zipkin")
+var zipkin = builder.AddContainer("zipkin-all-in-one", "openzipkin/zipkin:3.6.1")
     .WithEndpoint(port: 9411, targetPort: 9411, name: "http", isProxied: true, isExternal: true);
 
 if (builder.ExecutionContext.IsPublishMode)
@@ -166,7 +166,7 @@ if (builder.ExecutionContext.IsPublishMode)
     zipkin.WithLifetime(ContainerLifetime.Persistent);
 }
 
-var otelCollector = builder.AddContainer("otel-collector", "otel/opentelemetry-collector-contrib")
+var otelCollector = builder.AddContainer("otel-collector", "otel/opentelemetry-collector-contrib:0.116.1")
     .WithBindMount(
         "../../../../deployments/configs/otel-collector-config.yaml",
         "/etc/otelcol-contrib/config.yaml",
@@ -185,7 +185,7 @@ if (builder.ExecutionContext.IsPublishMode)
     otelCollector.WithLifetime(ContainerLifetime.Persistent);
 }
 
-var prometheus = builder.AddContainer("prometheus", "prom/prometheus")
+var prometheus = builder.AddContainer("prometheus", "prom/prometheus:v3.1.0")
     .WithBindMount("../../../../deployments/configs/prometheus.yaml", "/etc/prometheus/prometheus.yml")
     .WithArgs(
         "--config.file=/etc/prometheus/prometheus.yml",
@@ -200,7 +200,7 @@ if (builder.ExecutionContext.IsPublishMode)
     prometheus.WithLifetime(ContainerLifetime.Persistent);
 }
 
-var grafana = builder.AddContainer("grafana", "grafana/grafana")
+var grafana = builder.AddContainer("grafana", "grafana/grafana:11.4.0")
     .WithEnvironment("GF_INSTALL_PLUGINS", "grafana-clock-panel,grafana-simple-json-datasource")
     .WithEnvironment("GF_SECURITY_ADMIN_USER", "admin")
     .WithEnvironment("GF_SECURITY_ADMIN_PASSWORD", "admin")
@@ -214,7 +214,7 @@ if (builder.ExecutionContext.IsPublishMode)
     grafana.WithLifetime(ContainerLifetime.Persistent);
 }
 
-var nodeExporter = builder.AddContainer("node-exporter", "prom/node-exporter")
+var nodeExporter = builder.AddContainer("node-exporter", "prom/node-exporter:v1.12.1")
     .WithBindMount("/proc", "/host/proc", isReadOnly: true)
     .WithBindMount("/sys", "/host/sys", isReadOnly: true)
     .WithBindMount("/", "/rootfs", isReadOnly: true)
@@ -229,7 +229,7 @@ if (builder.ExecutionContext.IsPublishMode)
     nodeExporter.WithLifetime(ContainerLifetime.Persistent);
 }
 
-var tempo = builder.AddContainer("tempo", "grafana/tempo")
+var tempo = builder.AddContainer("tempo", "grafana/tempo:2.7.0")
     .WithBindMount("../../../../deployments/configs/tempo.yaml", "/etc/tempo.yaml", isReadOnly: true)
     .WithArgs("--config.file=/etc/tempo.yaml")
     .WithEndpoint(port: 3200, targetPort: 3200, name: "http", isProxied: true, isExternal: false)
@@ -242,7 +242,7 @@ if (builder.ExecutionContext.IsPublishMode)
     tempo.WithLifetime(ContainerLifetime.Persistent);
 }
 
-var loki = builder.AddContainer("loki", "grafana/loki")
+var loki = builder.AddContainer("loki", "grafana/loki:3.3.2")
     .WithBindMount("../../../../deployments/configs/loki-config.yaml", "/etc/loki/local-config.yaml", isReadOnly: true)
     .WithArgs("-config.file=/etc/loki/local-config.yaml")
     .WithEndpoint(port: 3100, targetPort: 3100, name: "http", isProxied: true, isExternal: false)

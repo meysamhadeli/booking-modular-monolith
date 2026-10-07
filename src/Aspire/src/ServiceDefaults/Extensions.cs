@@ -1,5 +1,5 @@
-using BuildingBlocks.HealthCheck;
-using BuildingBlocks.OpenTelemetryCollector;
+using Griffin.HealthCheck;
+using Griffin.OpenTelemetryCollector;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 

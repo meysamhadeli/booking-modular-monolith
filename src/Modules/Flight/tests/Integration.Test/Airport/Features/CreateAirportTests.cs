@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Api;
-using BuildingBlocks.Contracts.EventBus.Messages;
-using BuildingBlocks.TestBase;
+using Griffin.Core.EventBus.Messages;
+using Griffin.TestBase;
 using Flight.Data;
 using FluentAssertions;
 using Integration.Test.Fakes;

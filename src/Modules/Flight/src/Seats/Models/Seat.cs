@@ -1,5 +1,5 @@
 using System;
-using BuildingBlocks.Core.Model;
+using Griffin.Core.Model;
 
 namespace Flight.Seats.Models;
 

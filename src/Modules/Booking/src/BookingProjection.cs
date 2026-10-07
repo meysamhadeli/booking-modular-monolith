@@ -1,6 +1,6 @@
 using Booking.Data;
-using BuildingBlocks.EventStoreDB.Events;
-using BuildingBlocks.EventStoreDB.Projections;
+using Griffin.EventStoreDB.Events;
+using Griffin.EventStoreDB.Projections;
 using MediatR;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -9,7 +9,6 @@ namespace Booking;
 
 using Booking.Features.CreatingBook.V1;
 using Booking.Models;
-using MassTransit;
 
 public class BookingProjection : IProjectionProcessor
 {

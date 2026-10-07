@@ -5,7 +5,6 @@ namespace Integration.Test.Fakes;
 
 using System;
 using global::Flight.Seats.Features.CreatingSeat.V1;
-using MassTransit;
 
 public class FakeCreateSeatCommand : AutoFaker<CreateSeat>
 {

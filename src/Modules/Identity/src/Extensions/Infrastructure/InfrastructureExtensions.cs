@@ -1,6 +1,6 @@
-using BuildingBlocks.EFCore;
-using BuildingBlocks.Mapster;
-using BuildingBlocks.Web;
+using Griffin.EFCore;
+using Griffin.Mapster;
+using Griffin.Web;
 using FluentValidation;
 using Identity.Data;
 using Identity.Data.Seed;

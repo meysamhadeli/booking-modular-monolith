@@ -1,9 +1,8 @@
 using AutoBogus;
-using BuildingBlocks.Contracts.EventBus.Messages;
+using Griffin.Core.EventBus.Messages;
 
 namespace Integration.Test.Fakes;
 
-using MassTransit;
 
 public class FakeUserCreated : AutoFaker<UserCreated>
 {

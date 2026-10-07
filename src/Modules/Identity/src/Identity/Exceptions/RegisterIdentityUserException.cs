@@ -1,4 +1,4 @@
-using BuildingBlocks.Exception;
+using Griffin.Core.Exception;
 
 namespace Identity.Identity.Exceptions;
 

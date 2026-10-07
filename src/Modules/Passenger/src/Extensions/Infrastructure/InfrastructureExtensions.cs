@@ -1,7 +1,7 @@
-using BuildingBlocks.EFCore;
-using BuildingBlocks.Mapster;
-using BuildingBlocks.Mongo;
-using BuildingBlocks.Web;
+using Griffin.EFCore;
+using Griffin.Mapster;
+using Griffin.Mongo;
+using Griffin.Web;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;

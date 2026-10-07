@@ -1,6 +1,6 @@
 using Api;
 using Booking.Data;
-using BuildingBlocks.TestBase;
+using Griffin.TestBase;
 using Xunit;
 
 namespace Integration.Test;

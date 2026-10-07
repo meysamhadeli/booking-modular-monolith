@@ -5,7 +5,6 @@ using Mapster;
 namespace Flight.Seats.Features;
 
 using CreatingSeat.V1;
-using MassTransit;
 using ReservingSeat.V1;
 
 public class SeatMappings : IRegister

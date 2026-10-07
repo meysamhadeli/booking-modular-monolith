@@ -4,7 +4,6 @@ using AutoBogus;
 using global::Flight.Data.Seed;
 using global::Flight.Flights.Enums;
 using global::Flight.Flights.Features.CreatingFlight.V1;
-using MassTransit;
 
 public sealed class FakeCreateFlightMongoCommand : AutoFaker<CreateFlightMongo>
 {

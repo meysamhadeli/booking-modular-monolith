@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Api;
-using BuildingBlocks.TestBase;
+using Griffin.TestBase;
 using FluentAssertions;
 using Integration.Test.Fakes;
 using Passenger;

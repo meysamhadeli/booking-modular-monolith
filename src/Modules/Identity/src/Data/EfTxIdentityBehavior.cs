@@ -1,32 +1,28 @@
 using System.Text.Json;
 using System.Transactions;
-using BuildingBlocks.Core;
-using BuildingBlocks.PersistMessageProcessor;
-using BuildingBlocks.Polly;
+using Griffin.Core;
+using Griffin.Polly;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Identity.Data;
 
 public class EfTxIdentityBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-where TRequest : notnull, IRequest<TResponse>
-where TResponse : notnull
+    where TRequest : notnull, IRequest<TResponse>
+    where TResponse : notnull
 {
     private readonly ILogger<EfTxIdentityBehavior<TRequest, TResponse>> _logger;
     private readonly IdentityContext _identityContext;
-    private readonly IPersistMessageDbContext _persistMessageDbContext;
     private readonly IEventDispatcher _eventDispatcher;
 
     public EfTxIdentityBehavior(
         ILogger<EfTxIdentityBehavior<TRequest, TResponse>> logger,
         IdentityContext identityContext,
-        IPersistMessageDbContext persistMessageDbContext,
         IEventDispatcher eventDispatcher
     )
     {
         _logger = logger;
         _identityContext = identityContext;
-        _persistMessageDbContext = persistMessageDbContext;
         _eventDispatcher = eventDispatcher;
     }
 
@@ -83,13 +79,6 @@ where TResponse : notnull
                 async () =>
                 {
                     await _identityContext.SaveChangesAsync(cancellationToken);
-                });
-
-            // Save data to database with some retry policy in distributed transaction
-            await _persistMessageDbContext.RetryOnFailure(
-                async () =>
-                {
-                    await _persistMessageDbContext.SaveChangesAsync(cancellationToken);
                 });
 
             scope.Complete();

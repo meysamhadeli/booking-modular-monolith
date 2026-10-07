@@ -1,6 +1,6 @@
-using BuildingBlocks.Caching;
-using BuildingBlocks.Logging;
-using BuildingBlocks.Validation;
+using Griffin.Caching;
+using Griffin.Log;
+using Griffin.Validation;
 using Identity.Data;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

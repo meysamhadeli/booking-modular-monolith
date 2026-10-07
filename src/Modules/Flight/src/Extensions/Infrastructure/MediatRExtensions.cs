@@ -1,6 +1,6 @@
-using BuildingBlocks.Caching;
-using BuildingBlocks.Logging;
-using BuildingBlocks.Validation;
+using Griffin.Caching;
+using Griffin.Log;
+using Griffin.Validation;
 using Flight.Data;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +14,7 @@ public static class MediatRExtensions
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(FlightRoot).Assembly));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(EfTxFlightBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(EfTxFlightBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(InvalidateCachingBehavior<,>));
 

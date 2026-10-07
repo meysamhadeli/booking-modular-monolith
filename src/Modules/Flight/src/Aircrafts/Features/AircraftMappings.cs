@@ -4,7 +4,6 @@ using Mapster;
 namespace Flight.Aircrafts.Features;
 
 using CreatingAircraft.V1;
-using MassTransit;
 using ValueObjects;
 
 public class AircraftMappings : IRegister

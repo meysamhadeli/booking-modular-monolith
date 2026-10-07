@@ -4,7 +4,6 @@ namespace Flight.Flights.Features;
 
 using CreatingFlight.V1;
 using DeletingFlight.V1;
-using MassTransit;
 using Models;
 using UpdatingFlight.V1;
 using FlightDto = Dtos.FlightDto;

@@ -1,6 +1,6 @@
 namespace Passenger.Passengers.Exceptions;
 
-using BuildingBlocks.Exception;
+using Griffin.Core.Exception;
 
 public class PassengerNotExist : BadRequestException
 {

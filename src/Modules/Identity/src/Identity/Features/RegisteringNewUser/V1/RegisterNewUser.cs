@@ -1,4 +1,4 @@
-using BuildingBlocks.Constants;
+using Griffin.Core.Constants;
 using Duende.IdentityServer.EntityFramework.Entities;
 
 namespace Identity.Identity.Features.RegisteringNewUser.V1;
@@ -8,10 +8,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
-using BuildingBlocks.Contracts.EventBus.Messages;
-using BuildingBlocks.Core;
-using BuildingBlocks.Core.CQRS;
-using BuildingBlocks.Web;
+using Griffin.Core.EventBus.Messages;
+using Griffin.Core;
+using Griffin.Core.CQRS;
+using Griffin.Web;
 using Exceptions;
 using FluentValidation;
 using Mapster;

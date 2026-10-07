@@ -1,8 +1,8 @@
 using Booking.Data;
-using BuildingBlocks.EventStoreDB;
-using BuildingBlocks.Mapster;
-using BuildingBlocks.Mongo;
-using BuildingBlocks.Web;
+using Griffin.EventStoreDB;
+using Griffin.Mapster;
+using Griffin.Mongo;
+using Griffin.Web;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;

@@ -18,7 +18,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # BuildingBlocks is a git submodule (Griffin); it must be checked out so the
+      # projects' <ProjectReference Include="...\BuildingBlocks\src\**\*.csproj" /> resolves.
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Build and Test Flight Microservice
         uses: ./.github/actions/build-test
@@ -90,3 +94,13 @@ jobs:
       - name: Release Version Info
         run:
           echo "Release version is:" ${{ steps.last_release.outputs.tag_name }}
+
+      - name: Build and Publish Booking Modular Monolith to Docker
+        if: ${{ github.ref == 'refs/heads/main' && success() }}
+        uses: ./.github/actions/docker-build-publish
+        with:
+          tag-name: ${{ steps.last_release.outputs.tag_name }}
+          registry-username: ${{ secrets.DOCKERHUB_USERNAME }}
+          registry-password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          dockerfile-path: 'src/Api/Dockerfile'
+          image-name: 'booking-modular-monolith'

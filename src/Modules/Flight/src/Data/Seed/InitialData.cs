@@ -9,7 +9,6 @@ using Airports.ValueObjects;
 using Flight.Aircrafts.ValueObjects;
 using Flights.Models;
 using Flights.ValueObjects;
-using MassTransit;
 using Seats.Models;
 using Seats.ValueObjects;
 using AirportName = Airports.ValueObjects.Name;

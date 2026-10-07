@@ -4,7 +4,6 @@ using System;
 using AutoBogus;
 using global::Flight.Seats.Enums;
 using global::Flight.Seats.Features.CreatingSeat.V1;
-using MassTransit;
 
 public class FakeCreateSeatMongoCommand : AutoFaker<CreateSeatMongo>
 {

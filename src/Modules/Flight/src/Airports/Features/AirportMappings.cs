@@ -2,7 +2,6 @@ namespace Flight.Airports.Features;
 
 using CreatingAirport.V1;
 using Mapster;
-using MassTransit;
 using Models;
 
 public class AirportMappings : IRegister

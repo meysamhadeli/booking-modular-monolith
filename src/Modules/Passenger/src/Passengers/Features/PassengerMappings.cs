@@ -4,7 +4,6 @@ namespace Passenger.Passengers.Features;
 
 using CompletingRegisterPassenger.V1;
 using Dtos;
-using MassTransit;
 using Models;
 using ValueObjects;
 

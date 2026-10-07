@@ -9,7 +9,6 @@ using global::Flight.Aircrafts.ValueObjects;
 using global::Flight.Airports.ValueObjects;
 using global::Flight.Flights.ValueObjects;
 using global::Flight.Seats.ValueObjects;
-using MassTransit;
 using AirportName = global::Flight.Airports.ValueObjects.Name;
 using Name = global::Flight.Aircrafts.ValueObjects.Name;
 

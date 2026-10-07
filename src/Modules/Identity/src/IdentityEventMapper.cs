@@ -1,5 +1,5 @@
-using BuildingBlocks.Core;
-using BuildingBlocks.Core.Event;
+using Griffin.Core;
+using Griffin.Core.Event;
 
 namespace Identity;
 
