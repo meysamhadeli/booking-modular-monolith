@@ -16,6 +16,7 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
 
     steps:
       # BuildingBlocks is a git submodule (Griffin); it must be checked out so the
@@ -23,6 +24,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      # Pre-pull the Testcontainers images used by the integration tests so the test
+      # steps do not spend minutes pulling them (and a failed pull fails here, fast).
+      - name: Pre-pull test container images
+        run: |
+          docker pull postgres:17
+          docker pull mongo:8.0
+          docker pull rabbitmq:4.3.6-management
+          docker pull eventstore/eventstore:24.10.5-bookworm-slim
 
       - name: Build and Test Flight Microservice
         uses: ./.github/actions/build-test
