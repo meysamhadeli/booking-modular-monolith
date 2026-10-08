@@ -80,10 +80,32 @@ public class RegisterNewUserValidator : AbstractValidator<RegisterNewUser>
         });
 
         RuleFor(x => x.Username).NotEmpty().WithMessage("Please enter the username");
-        RuleFor(x => x.FirstName).NotEmpty().WithMessage("Please enter the first name");
-        RuleFor(x => x.LastName).NotEmpty().WithMessage("Please enter the last name");
+
+        RuleFor(x => x.FirstName).NotEmpty().WithMessage("Please enter the first name")
+            .MaximumLength(50).WithMessage("First name must be at most 50 characters");
+        RuleFor(x => x.LastName).NotEmpty().WithMessage("Please enter the last name")
+            .MaximumLength(50).WithMessage("Last name must be at most 50 characters");
+
         RuleFor(x => x.Email).NotEmpty().WithMessage("Please enter the last email")
             .EmailAddress().WithMessage("A valid email is required");
+
+        RuleFor(x => x.PassportNumber).NotEmpty().WithMessage("Please enter the passport number")
+            .MaximumLength(10).WithMessage("Passport number must be at most 10 characters");
+
+        // `UserCreated` carries `FirstName + " " + LastName` as its `Name`, and in this modular
+        // monolith that message is handled in-process by the Passenger module, which persists
+        // the name into a `character varying(50)` column. Validate the combined length here so
+        // over-long names fail fast with a 400 instead of surfacing as a Postgres error
+        // (`22001: value too long for type character varying(50)`) inside another module.
+        RuleFor(x => x).Custom((x, context) =>
+        {
+            var fullName = $"{x.FirstName} {x.LastName}".Trim();
+            if (fullName.Length > 50)
+            {
+                context.AddFailure(nameof(x.FirstName),
+                    "First name and last name combined must be at most 50 characters");
+            }
+        });
     }
 }
 
